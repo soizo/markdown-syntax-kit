@@ -133,15 +133,16 @@ export class TextCursor {
 		return this;
 	}
 
+	// Peeking at a boundary line must restore the cursor too.
 	public getPrevLine(): Line | null {
-		if (!this.prev() || this.curLine.number <= 1) return null;
+		if (!this.prev()) return null;
 		let prevLine = this.curLine;
 		this.next();
 		return prevLine;
 	}
 
 	public getNextLine(): Line | null {
-		if (!this.next() || this.curLine.number >= this.doc.lines) return null;
+		if (!this.next()) return null;
 		let nextLine = this.curLine;
 		this.prev();
 		return nextLine;

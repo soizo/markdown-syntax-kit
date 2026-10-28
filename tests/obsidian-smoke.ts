@@ -3,7 +3,7 @@ import { configureDelimLookup } from "src/format-configs/format-utils";
 import { DEFAULT_SETTINGS } from "src/settings/configs";
 import { syntaxFixtures, editorFixtures, fencedDivSample, type SyntaxFixture } from "./syntax-fixtures";
 import { EditorParser } from "src/editor-mode/preprocessor/parser";
-import { Text } from "@codemirror/state";
+import { ChangeSet, Text } from "@codemirror/state";
 import { TokenStatus } from "src/enums";
 import { checkSpoilerStyles } from "./spoiler-styles";
 import { checkFencedDivs } from "./fenced-div";
@@ -105,6 +105,56 @@ export function run(styles: string) {
 		if (tokens.length != count || validTag !== undefined && tokens.some(token => token.validTag != validTag))
 			throw Error(`Editor fixture ${JSON.stringify(source)}: expected ${count} active tokens, got ${JSON.stringify(tokens)}`);
 	}
+	// Looking behind line 2 must restore the cursor after visiting line 1.
+	// Otherwise the same subscript is parsed twice on each incremental edit.
+	let subscriptChecks = 0;
+	for (const initial of ["~x~", "before\n\n- ~元~\n\nafter", "~x~ tail"]) {
+		for (let from = 0; from <= initial.length; from++) {
+			for (const insert of ["", "a", "\n", "~", " "]) {
+				const parsed = parseEditor(initial), doc = Text.of(initial.split("\n"));
+				const changes = ChangeSet.of({ from, to: Math.min(from + 1, doc.length), insert }, doc.length);
+				const next = changes.apply(doc);
+				parsed.parser.storeChanges(changes);
+				parsed.parser.applyChange(next, parseNative(next.toString()).tree);
+				const expected = parseEditor(next.toString()).parser.inlineTokens;
+				if (JSON.stringify(parsed.parser.inlineTokens) != JSON.stringify(expected))
+					throw Error(`Subscript edit ${JSON.stringify(initial)} at ${from} with ${JSON.stringify(insert)}: incremental tokens differ from a fresh parse`);
+				if (initial.includes("元") && from == 7 && insert == "") {
+					const factory = cm.docView.decorations.map(set => set.iter().value).find(Boolean)?.constructor;
+					if (!factory?.mark) throw Error("Native decoration factory unavailable");
+					const marks = parsed.parser.inlineTokens.filter(t => t.status == TokenStatus.ACTIVE)
+						.map(t => factory.mark({ class: "cm-sub" }).range(t.from, t.to));
+					const state = cm.state.constructor.create({ doc: next.toString(), extensions: [
+						cm.constructor.outerDecorations.of(factory.set(marks, true)),
+					] });
+					const parent = document.createElement("div");
+					const editor = new cm.constructor({ state, parent });
+					try {
+						if (editor.contentDOM.querySelectorAll(".cm-sub").length != 1 ||
+							editor.contentDOM.querySelector(".cm-sub .cm-sub"))
+							throw Error("Subscript edit produced nested cm-sub decorations");
+					} finally { editor.destroy(); parent.replaceChildren(); }
+				}
+				subscriptChecks++;
+			}
+		}
+	}
+	const sharedCursorChecks = ["++x++", "||x||", "^x^", "~x~", "!!{my-class}x!!", "=={red}x==", "::: my-class\nbody"].map(syntax => {
+		const initial = `before\n\n${syntax}\n\nafter`;
+		const parsed = parseEditor(initial), doc = Text.of(initial.split("\n"));
+		const changes = ChangeSet.of({ from: 7, to: 8 }, doc.length);
+		const next = changes.apply(doc);
+		parsed.parser.storeChanges(changes);
+		parsed.parser.applyChange(next, parseNative(next.toString()).tree);
+		const fresh = parseEditor(next.toString()).parser;
+		const counts = (parser: EditorParser) => ({
+			inline: parser.inlineTokens.filter(t => t.status == TokenStatus.ACTIVE).length,
+			block: parser.blockTokens.filter(t => t.status == TokenStatus.ACTIVE).length,
+		});
+		return { syntax, actual: counts(parsed.parser), expected: counts(fresh) };
+	});
+	if (sharedCursorChecks.some(check => JSON.stringify(check.actual) != JSON.stringify(check.expected)))
+		throw Error(`Shared cursor regression: ${JSON.stringify(sharedCursorChecks)}`);
 	// Regression for #20: editing after more than 512 custom styles must not
 	// throw while resolving the token index.
 	const manyStyles = Array.from({ length: 513 }, () => "^w^").join(" ");
@@ -114,6 +164,6 @@ export function run(styles: string) {
 	manyStylesParser.applyChange(Text.of(editedSource.split("\n")), editedTree);
 	if (manyStylesParser.inlineTokens.length != 513)
 		throw Error(`Editor regression #20: expected 513 tokens after edit, got ${manyStylesParser.inlineTokens.length}`);
-	return { passed: true, checks: checks.length, editorChecks: editorFixtures.length + 1,
+	return { passed: true, checks: checks.length, editorChecks: editorFixtures.length + 1, subscriptChecks, sharedCursorChecks,
 		spoilerChecks: checkSpoilerStyles(styles, render), fencedDivChecks: checkFencedDivs(cm, parseEditor) };
 }
