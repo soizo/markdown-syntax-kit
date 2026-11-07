@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS: PluginSettings = {
 	fencedDiv: MarkdownViewMode.ALL,
 
 	// Formatting
+	autoDeleteCustomSpan: false,
 	tidyFormatting: true,
 	openTagMenuAfterFormat: true,
 	noStyledDivInSourceMode: true,

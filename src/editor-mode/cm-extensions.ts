@@ -10,6 +10,7 @@ import { DecorationBuilder } from "src/editor-mode/decorator/builder";
 import { Formatter } from "src/editor-mode/formatting/formatter";
 import { hookLangState } from "src/editor-mode/utils/hook";
 import { Tree } from "@lezer/common";
+import { extendedAutoPairs, extendedPairDeletion } from "src/editor-mode/formatting/auto-pairs";
 
 type TagMenuOptionCaches = Record<"colorMenuItem" | "spanTagMenuItem" | "divTagMenuItem", IndexCache>;
 
@@ -230,5 +231,5 @@ export const editorSyntaxExtender = (plugin: ExtendedMarkdownSyntax): Extension 
 		}
 	);
 
-	return [instancesStore.of(plugin), preprocessField, viewPlugin];
+	return [instancesStore.of(plugin), preprocessField, viewPlugin, Prec.high(extendedAutoPairs), Prec.highest(extendedPairDeletion(plugin.settings))];
 }

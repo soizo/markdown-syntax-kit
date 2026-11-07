@@ -194,6 +194,12 @@ This plugin have been tested in the latest version of Obsidian (about 1.7.x - 1.
 
 Feel free to let me know if you find any bugs...
 
+## Typing delimiters
+
+Select text and type `++`, `||`, `^`, `~`, `==`, or `!!` to wrap it while keeping the text selected. Select an entire wrapped expression and type its delimiter character to remove the surrounding delimiters while keeping the content selected (for example, select `++text++` and press `+`). Double-character delimiters can also be typed one character at a time. With no selection, completing a delimiter inserts its closing partner and leaves the cursor between them (for example, `++|++`, where `|` represents the cursor). Typing an existing closing delimiter moves past it. This follows the enabled editor syntaxes and skips escaped delimiters, code and other protected Markdown contexts, and IME composition. Superscript and subscript wrapping requires text without whitespace; inline wrapping does not cross line breaks.
+
+Press Backspace or Delete between an empty delimiter pair to remove both sides at once (for example, `++|++` becomes `|`). Pairs containing text are left to normal editing. Empty `!!` pairs are excluded by default; enable **Formatting → Auto-delete empty custom span pairs (!!)** to include them.
+
 ## Development
 
 ```sh

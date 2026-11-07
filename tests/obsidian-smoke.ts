@@ -7,6 +7,7 @@ import { ChangeSet, Text } from "@codemirror/state";
 import { TokenStatus } from "src/enums";
 import { checkSpoilerStyles } from "./spoiler-styles";
 import { checkFencedDivs } from "./fenced-div";
+import { checkAutoPairs } from "./auto-pairs";
 import type { MarkdownView, WorkspaceLeaf } from "obsidian";
 
 /** Run only against detached fixture DOM. Never edit a vault or install a plugin. */
@@ -165,5 +166,5 @@ export function run(styles: string) {
 	if (manyStylesParser.inlineTokens.length != 513)
 		throw Error(`Editor regression #20: expected 513 tokens after edit, got ${manyStylesParser.inlineTokens.length}`);
 	return { passed: true, checks: checks.length, editorChecks: editorFixtures.length + 1, subscriptChecks, sharedCursorChecks,
-		spoilerChecks: checkSpoilerStyles(styles, render), fencedDivChecks: checkFencedDivs(cm, parseEditor) };
+		autoPairChecks: checkAutoPairs(cm), spoilerChecks: checkSpoilerStyles(styles, render), fencedDivChecks: checkFencedDivs(cm, parseEditor) };
 }

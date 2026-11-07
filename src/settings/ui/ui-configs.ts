@@ -185,6 +185,15 @@ export const settingTabConfigs = (settings: PluginSettings): SettingRoot<PluginS
 				spec: null
 			}]
 		}, {
+			name: "Auto-delete empty custom span pairs (!!)",
+			desc: "Delete both !! delimiters with Backspace or Delete when the cursor is between an empty pair. Disabled by default.",
+			fields: [{
+				type: Field.TOGGLE,
+				record: settings,
+				key: "autoDeleteCustomSpan",
+				spec: null
+			}]
+		}, {
 			name: "Open tag menu after formatting",
 			desc: "Will automatically open tag menu after doing formatting via command palattes or context menu. " +
 				"Only applied to the custom highlight, custom span, and fenced div.",

@@ -206,6 +206,7 @@ export type PluginSettings = {
 	alwaysShowFencedDivTag: MarkdownViewMode;
 	
 	// Formatting
+	autoDeleteCustomSpan: boolean;
 	tidyFormatting: boolean;
 	openTagMenuAfterFormat: boolean;
 	noStyledDivInSourceMode: boolean;
