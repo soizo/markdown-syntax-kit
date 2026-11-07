@@ -59,15 +59,20 @@ export function checkAutoPairs(cm: { state: EditorState & { constructor: typeof 
 	};
 	for (const delimiter of ["++", "||", "^", "~", "=="]) {
 		for (const forward of [false, true]) {
-			deletion(delimiter + delimiter, delimiter.length, false, "", forward);
-			deletion("a " + delimiter + delimiter + " b", 2 + delimiter.length, false, "a  b", forward);
+			const remainder = delimiter.slice(1).repeat(2);
+			deletion(delimiter + delimiter, delimiter.length, false, remainder, forward);
+			if (remainder) deletion(remainder, remainder.length / 2, false, "", forward);
+			deletion("a " + delimiter + delimiter + " b", 2 + delimiter.length, false, "a " + remainder + " b", forward);
 			deletion(delimiter + "x" + delimiter, delimiter.length + 1, false, null, forward);
 			deletion("\\" + delimiter + delimiter, 1 + delimiter.length, false, null, forward);
 		}
 	}
 	deletion("!!!!", 2, DEFAULT_SETTINGS.autoDeleteCustomSpan, null);
-	deletion("!!!!", 2, true, "");
-	deletion("!!!!", 2, true, "", true);
+	deletion("!!!!", 2, true, "!!");
+	deletion("!!!!", 2, true, "!!", true);
+	deletion("!!", 1, false, null);
+	deletion("!!", 1, true, "");
+	deletion("!!", 1, true, "", true);
 	deletion("!!x!!", 3, true, null);
 	deletion("++++", 1, false, null);
 	deletion("~~~~", 2, false, null);

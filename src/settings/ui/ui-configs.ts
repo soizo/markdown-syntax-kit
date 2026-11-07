@@ -186,7 +186,7 @@ export const settingTabConfigs = (settings: PluginSettings): SettingRoot<PluginS
 			}]
 		}, {
 			name: "Auto-delete empty custom span pairs (!!)",
-			desc: "Delete both !! delimiters with Backspace or Delete when the cursor is between an empty pair. Disabled by default.",
+			desc: "Remove one ! on each side with Backspace or Delete when the cursor is between an empty pair. Disabled by default.",
 			fields: [{
 				type: Field.TOGGLE,
 				record: settings,

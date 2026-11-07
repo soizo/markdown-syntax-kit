@@ -67,7 +67,7 @@ export function handleExtendedInput(view: EditorView, from: number, to: number, 
 
 export const extendedAutoPairs = EditorView.inputHandler.of(handleExtendedInput);
 
-/** Delete only empty, exact delimiter pairs; leave content and selections alone. */
+/** Remove one character on each side of an empty pair, including a partially deleted pair. */
 export function deleteExtendedPair(view: EditorView, settings: Pick<PluginSettings, "autoDeleteCustomSpan">, forward = false): boolean {
 	if (view.composing || view.state.readOnly) return false;
 	const state = view.state;
@@ -77,17 +77,18 @@ export function deleteExtendedPair(view: EditorView, settings: Pick<PluginSettin
 		const char = state.doc.sliceString(position - 1, position);
 		const type = EditorDelimLookup[char];
 		if (type === undefined || type == Format.CUSTOM_SPAN && !settings.autoDeleteCustomSpan) return null;
-		const rule = InlineRules[type], delimiter = char.repeat(rule.length);
-		const from = position - rule.length, to = position + rule.length;
-		if (from < 0 || to > state.doc.length || state.doc.sliceString(from, position) != delimiter ||
-			state.doc.sliceString(position, to) != delimiter) return null;
-		const prefix = state.doc.sliceString(state.doc.lineAt(from).from, from);
-		if (isEscaped(prefix, prefix.length) || state.doc.sliceString(from - 1, from) == char ||
-			state.doc.sliceString(to, to + 1) == char) return null;
+		const rule = InlineRules[type];
+		let opening = position, closing = position;
+		while (opening > 0 && state.doc.sliceString(opening - 1, opening) == char) opening--;
+		while (closing < state.doc.length && state.doc.sliceString(closing, closing + 1) == char) closing++;
+		const length = position - opening;
+		if (!length || length > rule.length || closing - position != length) return null;
+		const prefix = state.doc.sliceString(state.doc.lineAt(opening).from, opening);
+		if (isEscaped(prefix, prefix.length)) return null;
 		for (let node = syntaxTree(state).resolveInner(position, -1); node; node = node.parent!) {
 			if (/code|math|comment|frontmatter|html|url|link/i.test(node.name)) return null;
 		}
-		return { range, from, to };
+		return { range, from: position - 1, to: position + 1 };
 	});
 	// Let the normal editor command handle every cursor if any cursor is ineligible.
 	if (plans.some(plan => !plan)) return false;
