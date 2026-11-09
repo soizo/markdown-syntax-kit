@@ -17,7 +17,14 @@ export function handleExtendedInput(view: EditorView, from: number, to: number, 
 	const state = view.state;
 	// Only handle ordinary selection replacement, never an IME replacement range.
 	if (from != state.selection.main.from || to != state.selection.main.to) return false;
+	// Leave unselected carets to Obsidian for block IDs and links.
+	const selectionOnly = type == Format.SUPERSCRIPT;
+	if (selectionOnly && state.selection.ranges.every(range => range.empty)) return false;
 	const plans = state.selection.ranges.map(range => {
+		if (selectionOnly && range.empty) {
+			const cursor = range.from + text.length;
+			return { range, from: range.from, to: range.to, insert: text, anchor: cursor, head: cursor };
+		}
 		const line = state.doc.lineAt(range.from);
 		const prefix = state.doc.sliceString(line.from, range.from);
 		if (isEscaped(prefix, prefix.length)) return null;

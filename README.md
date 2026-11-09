@@ -37,7 +37,7 @@ A fenced div starts with `:::` and ends at a blank line, a change of block conte
 Apply a CSS class to this block.
 ```
 
-Select text and type a delimiter to wrap it. Typing the delimiter on an entirely wrapped selection removes the pair. At an empty cursor, typing `++` inserts both delimiters. Use the **More format** editor menu or the command palette to apply formatting. Plugin settings let you enable individual formats, customise highlight colours and save CSS classes for reuse.
+Select text and type a delimiter to wrap it. Typing the delimiter on an entirely wrapped selection removes the pair. At an empty cursor, typing `++` inserts both delimiters. Typing `^` without a selection inserts a single caret for Obsidian block IDs, block links or manually typed superscript. Use the **More format** editor menu or the command palette to apply formatting. Plugin settings let you enable individual formats, customise highlight colours and save CSS classes for reuse.
 
 See the [syntax rules](docs/rule.md) for delimiter details and [reading-mode escaping limits](docs/rule.md#7-note-delimiter-escaping). Spoiler delimiters in table cells cannot be escaped in Source mode.
 

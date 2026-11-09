@@ -32,9 +32,15 @@ export function checkAutoPairs(cm: { state: EditorState & { constructor: typeof 
 		run(wrapped, 0, wrapped.length, [delimiter], "f萨", 0, 2);
 		run("文字", 0, 2, [delimiter], delimiter + "文字" + delimiter, delimiter.length, delimiter.length + 2);
 		run("文字", 2, 0, [delimiter], delimiter + "文字" + delimiter, delimiter.length + 2, delimiter.length);
+		if (delimiter == "^") continue;
 		run("", 0, 0, [...delimiter], delimiter + delimiter, delimiter.length);
 		run("", 0, 0, [...delimiter, "文", ...delimiter], delimiter + "文" + delimiter, delimiter.length * 2 + 1);
 	}
+	run("", 0, 0, ["^"], "^", 1);
+	run("", 0, 0, ["^", "文字", "^"], "^文字^", 4);
+	run("Note ", 5, 5, ["^", "block-id"], "Note ^block-id", 14);
+	run("[[Note#", 7, 7, ["^"], "[[Note#^", 8);
+	run("x^", 1, 1, ["^"], "x^^", 2);
 	run("文字", 0, 2, ["+", "+"], "++文字++", 2, 4);
 	run("\\", 1, 1, ["+", "+"], "\\++", 3);
 	run("\\\\", 2, 2, ["+", "+"], "\\\\++++", 4);
