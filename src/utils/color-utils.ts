@@ -28,11 +28,11 @@ export function createColorConfig(tag: string, color: string, name: string, show
 
 
 export function takeBuiltinColor(color: string) {
-	return document.body.computedStyleMap().get(`--color-${color}`)?.toString();
+	return activeDocument.body.computedStyleMap().get(`--color-${color}`)?.toString();
 }
 
 export function buildColorsStyleSheet(plugin: MarkdownSyntaxKit): StyleSheetHandler {
-	let colorsHandler = new StyleSheetHandler(plugin),
+	let colorsHandler = new StyleSheetHandler(plugin, plugin.app.workspace.containerEl.ownerDocument),
 		configs = plugin.settings.colorConfigs;
 	for (let i = 0; i < configs.length; i++) {
 		let ruleStr = convertColorConfigToCSSRule(configs[i]);

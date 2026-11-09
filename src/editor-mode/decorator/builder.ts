@@ -28,13 +28,13 @@ function _createInlineDecoRange(token: Token, cls: string) {
 }
 
 class _DecorationHolder {
-	public inlineSet: DecorationSet = RangeSet.empty;
-	public blockSet: DecorationSet = RangeSet.empty;
-	public inlineOmittedSet: DecorationSet = RangeSet.empty;
-	public blockOmittedSet: DecorationSet = RangeSet.empty;
-	public colorBtnSet: DecorationSet = RangeSet.empty;
-	public revealedSpoilerSet: DecorationSet = RangeSet.empty;
-	public lineBreaksSet: DecorationSet = RangeSet.empty;
+	public inlineSet: DecorationSet = Decoration.none;
+	public blockSet: DecorationSet = Decoration.none;
+	public inlineOmittedSet: DecorationSet = Decoration.none;
+	public blockOmittedSet: DecorationSet = Decoration.none;
+	public colorBtnSet: DecorationSet = Decoration.none;
+	public revealedSpoilerSet: DecorationSet = Decoration.none;
+	public lineBreaksSet: DecorationSet = Decoration.none;
 }
 
 class _DelimOmitter {
@@ -115,7 +115,7 @@ class _DelimOmitter {
 
 class _LineBreakReplacer {
 	public readonly parser: EditorParser;
-	public lineBreakSet: RangeSet<Decoration> = RangeSet.empty;
+	public lineBreakSet: RangeSet<Decoration> = Decoration.none;
 
 	constructor(parser: EditorParser) {
 		this.parser = parser;
@@ -129,7 +129,7 @@ class _LineBreakReplacer {
 			};
 		
 		if (!blockTokens.length)
-			return this.lineBreakSet = RangeSet.empty;
+			return this.lineBreakSet = Decoration.none;
 
 		if (reparsedRange.from != reparsedRange.initTo || reparsedRange.from != reparsedRange.changedTo) {
 			updateSpec.filterFrom = Math.min(blockTokens[reparsedRange.from]?.from ?? this.parser.lastStreamPoint.from, this.parser.lastStreamPoint.from);
@@ -218,7 +218,7 @@ export class DecorationBuilder {
 			this._createColorBtnWidgets(this._catcher.hlTokens);
 			this._revealSpoiler(this._catcher.spoilerTokens);
 		} else {
-			this.holder.colorBtnSet = this.holder.revealedSpoilerSet = RangeSet.empty;
+			this.holder.colorBtnSet = this.holder.revealedSpoilerSet = Decoration.none;
 		}
 	}
 
@@ -271,7 +271,7 @@ export class DecorationBuilder {
 			this._replaceLineBreaks(transaction.newDoc, transaction.changes);
 
 		if (activities.isModeChanged || activities.isDeepRefreshed)
-			this.holder.blockOmittedSet = RangeSet.empty;
+			this.holder.blockOmittedSet = Decoration.none;
 
 		if (!transaction.state.field(editorLivePreviewField)) {
 			this._removeOmitter();
@@ -320,7 +320,7 @@ export class DecorationBuilder {
 
 	private _createColorBtnWidgets(hlTokens: TokenGroup): DecorationSet {
 		if (!this._settings.colorButton)
-			return this.holder.colorBtnSet = RangeSet.empty;
+			return this.holder.colorBtnSet = Decoration.none;
 
 		let btnWidgets: Range<Decoration>[] = [];
 		for (let i = 0; i < hlTokens.length; i++) {
@@ -356,12 +356,12 @@ export class DecorationBuilder {
 	private _omitFencedDivOpening(changes?: ChangeDesc): DecorationSet {
 		let isOmitted = !(this._settings.alwaysShowFencedDivTag & MarkdownViewMode.EDITOR_MODE);
 		if (!isOmitted) {
-			return this.holder.blockOmittedSet = RangeSet.empty;
+			return this.holder.blockOmittedSet = Decoration.none;
 		}
 		return this.holder.blockOmittedSet = this._omitter.omitBlock(this.holder.blockOmittedSet, changes);
 	}
 
 	private _removeOmitter(): void {
-		this.holder.inlineOmittedSet = this.holder.blockOmittedSet = RangeSet.empty;
+		this.holder.inlineOmittedSet = this.holder.blockOmittedSet = Decoration.none;
 	}
 }

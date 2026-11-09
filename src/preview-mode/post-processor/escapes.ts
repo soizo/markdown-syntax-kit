@@ -23,8 +23,8 @@ const SYNTAX_CHARS = new Set([
 const SKIPPED_SELECTOR = ["code", "img", "script", "style", ...SKIPPED_CLASSES.map(cls => "." + cls)].join(",");
 const normalize = (text: string): string => text.replace(/[\s=]/g, "");
 
-function textNodes(root: Node): Text[] {
-	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+function textNodes(root: HTMLElement): Text[] {
+	const walker = root.ownerDocument.createTreeWalker(root, NodeFilter.SHOW_TEXT);
 	const nodes: Text[] = [];
 	while (walker.nextNode()) {
 		const node = walker.currentNode as Text;
@@ -109,7 +109,8 @@ export function protectEscapedDelimiters(root: HTMLElement, source: string): Esc
 		trace.text[trace.text.length - suffix - 1] == rendered[rendered.length - suffix - 1]) suffix++;
 	let offset = 0;
 	for (const node of nodes) {
-		const fragment = document.createDocumentFragment();
+		const doc = root.ownerDocument;
+		const fragment = doc.createDocumentFragment();
 		let start = 0;
 		for (let i = 0; i < node.length; i++) {
 			const char = node.data[i];
@@ -119,16 +120,14 @@ export function protectEscapedDelimiters(root: HTMLElement, source: string): Esc
 			const escaped = sourceOffset === null ? trace.characters.has(char) : trace.offsets.has(sourceOffset);
 			offset++;
 			if (!escaped) continue;
-			fragment.append(document.createTextNode(node.data.slice(start, i)));
-			const wrapper = document.createElement("span");
-			wrapper.textContent = char;
+			fragment.append(doc.createTextNode(node.data.slice(start, i)));
+			const wrapper = fragment.createSpan({ text: char });
 			elements.add(wrapper);
 			wrappers.push(wrapper);
-			fragment.append(wrapper);
 			start = i + 1;
 		}
 		if (start) {
-			fragment.append(document.createTextNode(node.data.slice(start)));
+			fragment.append(doc.createTextNode(node.data.slice(start)));
 			node.replaceWith(fragment);
 		}
 	}

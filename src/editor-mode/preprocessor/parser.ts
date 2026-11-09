@@ -4,7 +4,7 @@ import { PluginSettings, TokenGroup, ChangedRange, PlainRange, InlineFormat, Tok
 import { Format, LineCtx, MarkdownViewMode, TokenLevel, TokenStatus } from "src/enums";
 import { Formats, InlineRules } from "src/format-configs/rules";
 import { handleFencedDivTag, handleInlineTag, Tokenizer } from "src/editor-mode/preprocessor/tokenizer";
-import { findNode, getContextFromNode, disableEscape, findShifterAt, getShifterStart, hasInterferer, reenableEscape } from "src/editor-mode/preprocessor/syntax-node";
+import { findNode, getContextFromNode, findShifterAt, getShifterStart, hasInterferer } from "src/editor-mode/preprocessor/syntax-node";
 import { EditorDelimLookup, SKIPPED_NODE_RE } from "src/editor-mode/preprocessor/parser-configs";
 import { isBlankLine, getBlockEndAt, TextCursor } from "src/editor-mode/utils/doc-utils";
 import { findTokenIndexAt, provideTokenPartsRanges } from "src/editor-mode/utils/token-utils";
@@ -367,7 +367,7 @@ export class EditorParserState {
 		let nodeName = this.cursor!.name;
 		if (nodeName.includes("formatting-highlight")) return "hl_delim";
 		if (nodeName.includes("table-sep")) return "table_sep";
-		if (SKIPPED_NODE_RE.test(nodeName)) return "skipped";
+		if (SKIPPED_NODE_RE.test(nodeName) || this.settings.editorEscape && nodeName.includes("escape")) return "skipped";
 		return null;
 	}
 
@@ -476,8 +476,6 @@ export class EditorParser {
 
 	constructor(settings: PluginSettings) {
 		this.settings = settings;
-		if (!settings.editorEscape)
-			disableEscape();
 	}
 
 	/** Get the parsed tokens. */
@@ -503,12 +501,6 @@ export class EditorParser {
 	 * setting change that need the parser to parse from the start.
 	 */
 	public initParse(doc: Text, tree: Tree, stopAt?: number): void {
-		// Toggle escape.
-		if (this.settings.editorEscape)
-			reenableEscape();
-		else
-			disableEscape();
-		
 		// Flush all the results.
 		this.lastStreamPoint.from = 0;
 		this.inlineTokens = [];
@@ -668,12 +660,12 @@ export class EditorParser {
 
 	/** Parse the given document. */
 	private _streamParse(): void {
-		let prevLine: Line | null,
-			state = this._state;
+		const state = this._state;
+		const prevLine = state.prevLine;
 		this.lastStreamPoint.from = state.globalOffset;
 
 		// Get previous line context.
-		if (prevLine = this._state.prevLine) {
+		if (prevLine) {
 			state.setContext(state.getContext(prevLine));
 		}
 		// Try to skip current line if it is a blank line. If fails, resolve the

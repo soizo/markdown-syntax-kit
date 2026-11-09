@@ -19,7 +19,7 @@ export class LineBreak extends WidgetType {
 	}
 
 	public toDOM(): HTMLElement {
-		return document.createElement("br");
+		return createEl("br");
 	}
 
 	public get lineBreaks(): number {

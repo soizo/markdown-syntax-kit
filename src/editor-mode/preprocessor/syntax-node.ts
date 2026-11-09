@@ -1,18 +1,10 @@
 import { SyntaxNode, Tree } from "@lezer/common";
-import { SEMANTIC_INTERFERER_RE, SHIFTER_RE, ShifterNodeConfigs, SKIPPED_NODE_RE } from "src/editor-mode/preprocessor/parser-configs";
+import { SEMANTIC_INTERFERER_RE, SHIFTER_RE, ShifterNodeConfigs } from "src/editor-mode/preprocessor/parser-configs";
 import { LineCtx } from "src/enums";
 
 interface NodeSpec {
 	node: SyntaxNode,
 	type: string
-}
-
-export function disableEscape(): void {
-	SKIPPED_NODE_RE.compile("table|code|formatting|html|math|tag|url|barelink|atom|comment|string|meta|frontmatter|hr(?!\\w)");
-}
-
-export function reenableEscape(): void {
-	SKIPPED_NODE_RE.compile("table|code|formatting|escape|html|math|tag|url|barelink|atom|comment|string|meta|frontmatter|hr(?!\\w)");
 }
 
 export function findNode(tree: Tree, from: number, to: number, matcher: (node: SyntaxNode) => boolean): SyntaxNode | null {
@@ -87,12 +79,7 @@ export function getContextFromNode(node: SyntaxNode): LineCtx {
 }
 
 export function getShifterStart(spec: NodeSpec): number | null {
-	let node: SyntaxNode | null = spec.node,
-		type = spec.type;
-	if (node = ShifterNodeConfigs[type]?.getOpen(node)) {
-		return node.from;
-	}
-	return null;
+	return ShifterNodeConfigs[spec.type]?.getOpen(spec.node)?.from ?? null;
 }
 
 export function hasInterferer(tree: Tree, from: number, to: number): boolean {

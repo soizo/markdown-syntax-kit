@@ -63,10 +63,6 @@ declare module "obsidian" {
 }
 
 declare global {
-	interface Window {
-		globalThis: typeof globalThis;
-	}
-
 	type Writable<T> = {
 		-readonly [P in keyof T]: T[P];
 	}

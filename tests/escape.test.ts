@@ -15,6 +15,21 @@ const dom = new JSDOM();
 for (const name of ["document", "Node", "NodeFilter", "Text", "Element", "HTMLElement", "HTMLParagraphElement", "HTMLBRElement", "HTMLHeadingElement", "HTMLTableElement", "HTMLUListElement", "HTMLOListElement", "Range", "DOMParser"]) {
 	globalThis[name] = dom.window[name];
 }
+dom.window.Node.prototype.instanceOf = function (type) {
+	return this instanceof (this.ownerDocument?.defaultView?.[type.name] ?? type);
+};
+globalThis.createEl = (tag: string, options?: { text?: string }) => {
+	const element = document.createElement(tag);
+	if (options?.text !== undefined) element.textContent = options.text;
+	return element;
+};
+globalThis.createSpan = () => createEl("span");
+dom.window.DocumentFragment.prototype.createSpan = function (options) {
+	const element = createEl("span", options);
+	this.append(element);
+	return element;
+};
+globalThis.activeDocument = document;
 const elementPrototype = dom.window.Element.prototype;
 elementPrototype.addClass = function (...classes: string[]) { this.classList.add(...classes); };
 elementPrototype.hasClass = function (cls: string) { return this.classList.contains(cls); };

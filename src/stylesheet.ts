@@ -6,9 +6,11 @@ export class StyleSheetHandler {
 	private _root: DocumentOrShadowRoot;
 	private _subHandlers: StyleSheetHandler[] = [];
 
-	constructor(plugin?: MarkdownSyntaxKit, root: DocumentOrShadowRoot = document, rootStyleSheet?: CSSStyleSheet) {
-		let curWindow = (root as Document)?.win ?? (root as ShadowRoot).ownerDocument.win;
-		this._stylesheet = new curWindow.globalThis.CSSStyleSheet();
+	constructor(plugin: MarkdownSyntaxKit | undefined, root: DocumentOrShadowRoot, rootStyleSheet?: CSSStyleSheet) {
+		const node = root as Document | ShadowRoot;
+		const doc = node.instanceOf(Document) ? node : node.ownerDocument;
+		const { CSSStyleSheet } = doc.win as Window & { CSSStyleSheet: typeof window.CSSStyleSheet };
+		this._stylesheet = new CSSStyleSheet();
 		this._plugin = plugin;
 		this._root = root;
 		this.injectMain();
@@ -100,7 +102,7 @@ export class StyleSheetHandler {
 	}
 
 	public removeAll(): void {
-		this._stylesheet.replace("");
+		this._stylesheet.replaceSync("");
 		this._subHandlers.forEach(handler => handler.removeAll());
 	}
 

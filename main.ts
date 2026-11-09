@@ -1,4 +1,4 @@
-import { MarkdownView, Plugin, Command } from "obsidian";
+import { MarkdownView, Notice, Plugin, Command } from "obsidian";
 import { PluginSettings } from "src/types";
 import { DEFAULT_SETTINGS } from "src/settings/configs";
 import { ExtendedSettingTab } from "src/settings/ui/setting-tab";
@@ -25,28 +25,31 @@ export default class MarkdownSyntaxKit extends Plugin {
 		this.registerMarkdownPostProcessor(new ReadingModeSyntaxExtender(this.settings).postProcess);
 
 		this.tagManager = new TagManager(this);
-		this.opacityHandler = new StyleSheetHandler(this);
+		this.opacityHandler = new StyleSheetHandler(this, this.app.workspace.containerEl.ownerDocument);
 		this.opacityHandler.insert(`body.theme-light{--hl-opacity:${this.settings.lightModeHlOpacity}}`);
 		this.opacityHandler.insert(`body.theme-dark{--hl-opacity:${this.settings.darkModeHlOpacity}}`);
 
 		this.registerCommands(editorCommands);
 		this.extendEditorCtxMenu();
-
-		console.log(`Load ${this.manifest.name}`);
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, structuredClone(DEFAULT_SETTINGS), await this.loadData());
+		const saved: unknown = await this.loadData();
+		this.settings = structuredClone(DEFAULT_SETTINGS);
+		if (saved && typeof saved == "object") Object.assign(this.settings, saved);
 	}
 
 	async saveSettings() {
-		await this.saveData(this.settings);
+		try {
+			await this.saveData(this.settings);
+		} catch {
+			new Notice("Could not save Markdown Syntax Kit settings.");
+		}
 	}
 
 	onunload(): void {
 		this.tagManager.colorsHandler.destroy();
 		this.opacityHandler.destroy();
-		console.log(`Unload ${this.manifest.name}`);
 	}
 
 	reconfigureDelimLookup() {

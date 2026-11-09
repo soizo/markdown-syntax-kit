@@ -14,8 +14,8 @@ function _trimTag(tagStr: string): string {
 
 function _isLeafBlock(el: HTMLElement): boolean {
 	return (
-		el instanceof HTMLParagraphElement ||
-		el instanceof HTMLHeadingElement
+		el?.instanceOf(HTMLParagraphElement) ||
+		el?.instanceOf(HTMLHeadingElement)
 	);
 }
 
@@ -32,7 +32,7 @@ function _drawCustomSpan(settings: PluginSettings, targetEl: HTMLElement): void 
 		customSpanElements = targetEl.querySelectorAll<HTMLElement>("." + baseCls);
 
 	customSpanElements.forEach((el) => {
-		if (!(el.firstChild instanceof Text && el.firstChild.textContent)) return;
+		if (!(el.firstChild?.instanceOf(Text) && el.firstChild.textContent)) return;
 		let tag = CUSTOM_SPAN_TAG_RE.exec(el.firstChild.textContent)?.[1];
 		if (tag) {
 			let clsList = _trimTag(tag).split(" ");
@@ -49,7 +49,7 @@ function _drawCustomHighlight(settings: PluginSettings, targetEl: HTMLElement): 
 		baseCls = InlineRules[Format.HIGHLIGHT].class;
 
 	markElements.forEach((el) => {
-		if (!(el.firstChild instanceof Text && el.firstChild.textContent)) { return }
+		if (!(el.firstChild?.instanceOf(Text) && el.firstChild.textContent)) { return }
 		let color = COLOR_TAG_RE.exec(el.firstChild.textContent)?.[1];
 		if (color) {
 			el.classList.add(baseCls, `${baseCls}-${color}`);
@@ -61,11 +61,11 @@ function _drawCustomHighlight(settings: PluginSettings, targetEl: HTMLElement): 
 }
 
 function _drawFencedDiv(settings: PluginSettings, targetEl: HTMLElement): void {
-	if (!(targetEl.firstChild instanceof Text && targetEl.firstChild.textContent)) return;
+	if (!(targetEl.firstChild?.instanceOf(Text) && targetEl.firstChild.textContent)) return;
 
 	// A split/escaped tag is not a complete header. Only a line break or
 	// the end of the paragraph may follow its initial text node.
-	if (targetEl.firstChild.nextSibling && !(targetEl.firstChild.nextSibling instanceof HTMLBRElement)) return;
+	if (targetEl.firstChild.nextSibling && !(targetEl.firstChild.nextSibling?.instanceOf(HTMLBRElement))) return;
 	FENCED_DIV_RE.lastIndex = 0;
 	let baseCls = BlockRules[Format.FENCED_DIV].class,
 		textNode = targetEl.firstChild,
@@ -104,7 +104,7 @@ export class ReadingModeSyntaxExtender {
 			new PreviewModeParser(targetedEls[i], parsingQueue, escapedElements).streamParse();
 			for (let i = 0; i < parsingQueue.length; i++) {
 				parsingQueue[i].streamParse();
-				if (i >= 100) { throw Error(`${parsingQueue}`) }
+				if (i >= 100) { throw Error("Exceeded the inline formatting nesting limit") }
 			}
 			parsingQueue.splice(0);
 		}
@@ -117,9 +117,9 @@ export class ReadingModeSyntaxExtender {
 			contentEl && (
 			_isLeafBlock(contentEl) ||
 			_isCallout(contentEl) ||
-			contentEl instanceof HTMLTableElement ||
-			contentEl instanceof HTMLUListElement ||
-			contentEl instanceof HTMLOListElement ||
+			contentEl?.instanceOf(HTMLTableElement) ||
+			contentEl?.instanceOf(HTMLUListElement) ||
+			contentEl?.instanceOf(HTMLOListElement) ||
 			contentEl.tagName == "BLOCKQUOTE"
 		)) { return true }
 		return false;
@@ -141,7 +141,7 @@ export class ReadingModeSyntaxExtender {
 
 			if (this._settings.fencedDiv & MarkdownViewMode.PREVIEW_MODE) {
 				let targetEl = capsulated ? sectionEl.firstElementChild : sectionEl;
-				if (targetEl instanceof HTMLParagraphElement)
+				if (targetEl?.instanceOf(HTMLParagraphElement))
 					_drawFencedDiv(this._settings, targetEl);
 			}
 

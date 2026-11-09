@@ -18,7 +18,7 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 		allowSpace: true,
 		mustBeClosed: true,
 		class: "ins",
-		getEl: () => document.createElement("ins"),
+		getEl: () => createEl("ins"),
 		builtin: false
 	},
 	[Format.SPOILER]: {
@@ -29,7 +29,7 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 		mustBeClosed: true,
 		class: "spoiler",
 		getEl: () => {
-			let spoilerEl = document.createElement("span");
+			let spoilerEl = createSpan();
 			spoilerEl.addClass("spoiler");
 			spoilerEl.addEventListener("click", (evt) => {
 				let spoilerEl = evt.currentTarget as Element,
@@ -47,7 +47,7 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 		allowSpace: false,
 		mustBeClosed: true,
 		class: "sup",
-		getEl: () => document.createElement("sup"),
+		getEl: () => createEl("sup"),
 		builtin: false
 	},
 	[Format.SUBSCRIPT]: {
@@ -57,7 +57,7 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 		allowSpace: false,
 		mustBeClosed: true,
 		class: "sub",
-		getEl: () => document.createElement("sub"),
+		getEl: () => createEl("sub"),
 		builtin: false
 	},
 	[Format.HIGHLIGHT]: {
@@ -67,7 +67,7 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 		allowSpace: true,
 		mustBeClosed: false,
 		class: "custom-highlight",
-		getEl: () => document.createElement("mark"),
+		getEl: () => createEl("mark"),
 		builtin: true
 	},
 	[Format.CUSTOM_SPAN]: {
@@ -78,7 +78,7 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 		mustBeClosed: true,
 		class: "custom-span",
 		getEl() {
-			let el = document.createElement("span");
+			let el = createSpan();
 			el.classList.add(InlineRules[Format.CUSTOM_SPAN].class);
 			return el;
 		},
@@ -86,45 +86,14 @@ export const InlineRules: Record<InlineFormat, InlineFormatRule> = {
 	}
 }
 
+const inlineFormats = Object.keys(InlineRules).map(Number) as InlineFormat[];
+const blockFormats = Object.keys(BlockRules).map(Number) as BlockFormat[];
+
 export const Formats = {
-	ALL: (() => {
-		let formats: Format[] = [];
-		for (let format in InlineRules) { formats.push(parseInt(format)) }
-		for (let format in BlockRules) { formats.push(parseInt(format)) }
-		return formats;
-	})(),
-	ALL_BLOCK: (() => {
-		let formats: BlockFormat[] = [];
-		for (let format in BlockRules) { formats.push(parseInt(format)) }
-		return formats;
-	})(),
-	ALL_INLINE: (() => {
-		let formats: InlineFormat[] = [];
-		for (let format in InlineRules) { formats.push(parseInt(format)) }
-		return formats;
-	})(),
-	SPACE_RESTRICTED_INLINE: (() => {
-		let formats: InlineFormat[] = [];
-		for (let format in InlineRules) {
-			let type = Number.parseInt(format) as InlineFormat;
-			if (!InlineRules[type].allowSpace) { formats.push(type) }
-		}
-		return formats;
-	})(),
-	SPACE_ALLOWED_INLINE: (() => {
-		let formats: InlineFormat[] = [];
-		for (let format in InlineRules) {
-			let type = Number.parseInt(format) as InlineFormat;
-			if (InlineRules[type].allowSpace) { formats.push(type) }
-		}
-		return formats;
-	})(),
-	NON_BUILTIN_INLINE: (() => {
-		let formats: InlineFormat[] = [];
-		for (let format in InlineRules) {
-			let type = Number.parseInt(format) as InlineFormat;
-			if (!InlineRules[type].builtin) { formats.push(type) }
-		}
-		return formats;
-	})()
-}
+	ALL: [...inlineFormats, ...blockFormats],
+	ALL_BLOCK: blockFormats,
+	ALL_INLINE: inlineFormats,
+	SPACE_RESTRICTED_INLINE: inlineFormats.filter(type => !InlineRules[type].allowSpace),
+	SPACE_ALLOWED_INLINE: inlineFormats.filter(type => InlineRules[type].allowSpace),
+	NON_BUILTIN_INLINE: inlineFormats.filter(type => !InlineRules[type].builtin),
+};

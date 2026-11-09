@@ -293,12 +293,12 @@ export class Formatter {
 		// If the end offset of the current range touches a token, then eliminate
 		// only its opening delimiter.
 		if (isLastTokenAtEdge) {
-			let { openRange, tagRange } = provideTokenPartsRanges(lastToken!);
+			let { openRange, tagRange } = provideTokenPartsRanges(lastToken);
 			this.state.pushChange(openRange);
-			if (lastToken!.validTag) {
+			if (lastToken.validTag) {
 				this.state.pushChange(tagRange);
 			}
-			if (lastToken!.status != TokenStatus.ACTIVE) {
+			if (lastToken.status != TokenStatus.ACTIVE) {
 				this.state.pushChange({ from: curRange.to, insert: delimStr });
 			}
 		} else {

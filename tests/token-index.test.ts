@@ -12,6 +12,7 @@ const dom = new JSDOM();
 for (const name of ["document", "Node", "NodeFilter", "Text", "Element", "HTMLElement"]) {
 	globalThis[name] = dom.window[name];
 }
+globalThis.activeDocument = document;
 document.body.computedStyleMap = () => new Map();
 const settings = { ...DEFAULT_SETTINGS };
 configureDelimLookup(settings);

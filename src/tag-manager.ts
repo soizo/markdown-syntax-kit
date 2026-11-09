@@ -123,9 +123,5 @@ export class TagManager {
 		this._requestSave();
 	}
 
-	private _requestSave = debounce(this._save, 200);
-
-	private _save(): void {
-		this._plugin.saveSettings();
-	}
+	private _requestSave = debounce(() => { void this._plugin.saveSettings(); }, 200);
 }

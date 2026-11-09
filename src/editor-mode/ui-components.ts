@@ -55,7 +55,7 @@ export function extendEditorCtxMenu(menu: Menu, editor: Editor, ctx: MarkdownFil
 				}
 				item.onClick(() => {
 					commands[i].editorCallback(editor, ctx);
-					menu.close();
+					menu.hide();
 				});
 			});
 		}

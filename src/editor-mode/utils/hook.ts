@@ -11,5 +11,8 @@ export function hookLangState(): {
 		throw TypeError();
 	}
 
-	return { langStateField, langStateFxType };
+	return {
+		langStateField: langStateField as StateField<LanguageState>,
+		langStateFxType: langStateFxType as StateEffectType<LanguageState>,
+	};
 }

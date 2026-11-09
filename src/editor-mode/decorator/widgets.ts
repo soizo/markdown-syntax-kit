@@ -23,7 +23,7 @@ export class ColorButton extends WidgetType {
 	}
 
 	public toDOM(view: EditorView): HTMLElement {
-		let btn = document.createElement("span");
+		let btn = createSpan();
 		btn.setAttribute("aria-hidden", "true");
 		btn.className = "cm-highlight-color-btn";
 		btn.onclick = () => {
@@ -60,7 +60,7 @@ export class HiddenWidget extends WidgetType {
 	}
 
 	public toDOM(): HTMLElement {
-		return document.createElement("span");
+		return createSpan();
 	}
 
 	public static of(from: number, to: number, token: Token, isBlock = false): Range<Decoration> {

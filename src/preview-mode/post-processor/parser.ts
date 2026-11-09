@@ -27,7 +27,7 @@ export class PreviewModeParser {
 
 	constructor(root: Element, parsingQueue: PreviewModeParser[], escapedElements = new WeakSet<Element>()) {
 		this.root = root;
-		this._walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+		this._walker = root.ownerDocument.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
 		this._walker.nextNode();
 		this._curNode = this._walker.currentNode;
 		this._parsingQueue = parsingQueue;
@@ -36,10 +36,10 @@ export class PreviewModeParser {
 
 	public streamParse(): void {
 		do {
-			if (this._curNode instanceof Text) {
+			if (this._curNode.instanceOf(Text)) {
 				this._offset = 0;
 				this._parseTextNode();
-			} else if (this._curNode instanceof Element) {
+			} else if (this._curNode.instanceOf(Element)) {
 				// An escaped punctuation character is literal content, not a
 				// formatting boundary (e.g. the middle caret in ^a\\^b^).
 				if (this._escapedElements.has(this._curNode)) continue;
@@ -93,7 +93,7 @@ export class PreviewModeParser {
 
 	private _resolve(type: InlineFormat, close?: Range): void {
 		if (close && this._queue[type]) {
-			let content = new Range(),
+			let content = this.root.ownerDocument.createRange(),
 				open = this._queue[type];
 			content.setStart(open.endContainer, open.endOffset);
 			content.setEnd(close.startContainer, close.startOffset);
@@ -128,7 +128,7 @@ export class PreviewModeParser {
 		hasSpaceAfter = _isWhitespace(str[this._offset]);
 		if (hasOpen && hasSpaceBefore || !hasOpen && hasSpaceAfter || length != reqLength) return false;
 
-		let range = new Range();
+		let range = this.root.ownerDocument.createRange();
 		range.setStart(this._curNode, this._offset - length);
 		range.setEnd(this._curNode, this._offset);
 		this._pushDelim(type, range);

@@ -1,7 +1,7 @@
 import MarkdownSyntaxKit from 'main'
 import Sortable, { SortableEvent } from 'sortablejs';
 import { App, IconName, PluginSettingTab, Setting } from 'obsidian';
-import { Field, MarkdownViewMode, DisplayBehaviour, Format } from 'src/enums';
+import { Field, Format } from 'src/enums';
 import { COLOR_SETTINGS_SPEC, DIV_TAG_SETTINGS_SPEC, SPAN_TAG_SETTINGS_SPEC, settingTabConfigs } from 'src/settings/ui/ui-configs';
 import { DropdownFieldDesc, MultiToggleFieldDesc, PluginSettings, SettingGroup, SettingItem, SettingRoot, SliderFieldDesc, TagConfig, TagSettingsSpec, ToggleFieldDesc } from 'src/types';
 
@@ -51,7 +51,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 	}
 
 	public saveSettings(spec?: { internal?: boolean, deep?: boolean }) {
-		this.plugin.saveSettings();
+		void this.plugin.saveSettings();
 		if (spec?.internal) {
 			this.refreshInternal = true;
 			if (spec?.deep) this.deeplyRefreshInternal = true;
@@ -292,7 +292,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 			dropdown.addOptions(field.spec.options);
 			dropdown.setValue(record[key].toString());
 			dropdown.onChange(val => {
-				(record[key] as MarkdownViewMode | DisplayBehaviour) = parseInt(val);
+				Object.assign(record, { [key]: parseInt(val) });
 				this.saveSettings(field.update);
 				if (field.callback) {
 					field.callback(dropdown, this.plugin);
@@ -318,11 +318,11 @@ export class ExtendedSettingTab extends PluginSettingTab {
 			btn.onClick(() => {
 				if (index + 1 >= optionMap.length) { index = 0 }
 				else { index++ }
-				let changedVal = parseInt(optionMap[index]) as typeof value,
+				let changedVal = parseInt(optionMap[index]),
 					{ icon, tooltip } = options[changedVal];
 				btn.setIcon(icon);
 				btn.setTooltip(tooltip ?? "");
-				(record[key] as MarkdownViewMode | DisplayBehaviour) = changedVal;
+				Object.assign(record, { [key]: changedVal });
 				this.saveSettings(field.update);
 				if (field.callback) {
 					field.callback(btn, this.plugin);
@@ -335,11 +335,10 @@ export class ExtendedSettingTab extends PluginSettingTab {
 		setting.addSlider(slider => {
 			let { record, key, spec } = field;
 			slider.setInstant(false);
-			slider.setDynamicTooltip();
 			slider.setLimits(spec.min, spec.max, spec.step);
 			slider.setValue(record[key]);
 			slider.onChange(val => {
-				(record[key] as number) = val;
+				Object.assign(record, { [key]: val });
 				this.saveSettings(field.update);
 				if (field.callback) {
 					field.callback(slider, this.plugin);
