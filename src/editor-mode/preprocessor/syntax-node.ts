@@ -38,7 +38,7 @@ export function findShifterAt(tree: Tree, offset: number): NodeSpec | null {
 			let match = SHIFTER_RE.exec(nodeRef.name);
 			if (match) {
 				node = nodeRef.node;
-				type = match[0];
+				type = match[0] == "internal-link" ? "link" : match[0];
 				return false;
 			}
 		},

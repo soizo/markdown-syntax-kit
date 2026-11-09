@@ -32,7 +32,7 @@ export const ShifterNodeConfigs: Record<string, { query: string, getOpen: (node:
 		}
 	},
 	["link"]: {
-		query: "link(?<=internal-link)|link(?=-start|end)",
+		query: "internal-link|link(?=-start|end)",
 		getOpen(node) {
 			while (!node.name.includes("link-start")) {
 				node = node.prevSibling!;

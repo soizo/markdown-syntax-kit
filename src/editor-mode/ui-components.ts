@@ -9,9 +9,6 @@ import { supportTag } from "src/format-configs/format-utils";
 import { tagMenuOptionCaches, instancesStore } from "src/editor-mode/cm-extensions";
 import { ctxMenuCommands } from "src/editor-mode/formatting/commands";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface ITagMenu extends TagMenu {};
-
 export function extendEditorCtxMenu(menu: Menu, editor: Editor, ctx: MarkdownFileInfo | MarkdownView) {
 	menu.addItem(item => {
 		let subMenu = item.setSubmenu(),
@@ -236,8 +233,9 @@ export class TagMenu extends Menu {
 			configurable: true,
 			writable: true
 		});
-		(other as ITagMenu).constructMenu(...args);
-		return other as ITagMenu;
+		const boundMenu = other as TagMenu;
+		boundMenu.constructMenu(...args);
+		return boundMenu;
 	}
 	static create(...args: ConstructorParameters<typeof TagMenu>) {
 		let [view, type] = args;

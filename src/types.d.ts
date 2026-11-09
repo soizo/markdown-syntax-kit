@@ -410,5 +410,4 @@ export interface CtxMenuCommand extends Command {
 	[data: string]: unknown;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ITagMenu extends TagMenu {}
+export type ITagMenu = TagMenu;
