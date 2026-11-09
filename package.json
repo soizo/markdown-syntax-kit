@@ -1,6 +1,6 @@
 {
 	"name": "markdown-syntax-kit",
-	"version": "2.0.12",
+	"version": "2.0.13",
 	"description": "Add Markdown delimiters for underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans, and fenced divs.",
 	"main": "main.js",
 	"scripts": {
@@ -10,7 +10,9 @@
 		"test:obsidian": "node tests/run-obsidian.mjs",
 		"version": "node version-bump.mjs && git add manifest.json versions.json package.json"
 	},
-	"keywords": ["obsidian-plugin"],
+	"keywords": [
+		"obsidian-plugin"
+	],
 	"author": "soizo",
 	"repository": "github:soizo/markdown-syntax-kit",
 	"license": "MIT",
