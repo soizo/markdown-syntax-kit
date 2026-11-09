@@ -1,7 +1,7 @@
 {
 	"id": "markdown-syntax-kit",
 	"name": "Markdown Syntax Kit",
-	"version": "2.0.13",
+	"version": "2.0.14",
 	"minAppVersion": "1.7.4",
 	"description": "Add Markdown delimiters for underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans, and fenced divs.",
 	"author": "soizo",

@@ -1,6 +1,6 @@
 {
 	"name": "markdown-syntax-kit",
-	"version": "2.0.13",
+	"version": "2.0.14",
 	"description": "Add Markdown delimiters for underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans, and fenced divs.",
 	"main": "main.js",
 	"scripts": {
