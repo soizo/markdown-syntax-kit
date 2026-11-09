@@ -1,225 +1,56 @@
-# Markdown Syntax Kit
+# Markdown Syntax Kit _(markdown-syntax-kit)_
 
-![Markdown Syntax Kit with examples of underline, coloured highlight and superscript syntax](docs/assets/banner.svg)
+![Markdown Syntax Kit formatting examples](docs/assets/banner.svg)
 
-Add Markdown delimiters for underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans and fenced divs in Obsidian.
+Add underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans and fenced divs in Obsidian.
 
-Markdown Syntax Kit is maintained by [soizo](https://github.com/soizo) and continues [Extended Markdown Syntax](https://github.com/kotaindah55/extended-markdown-syntax), originally created by Kotaindah55 (Sheva Ihza).
+## Install
 
-## 🚀 Main Features
+Requires Obsidian 1.7.4 or later. Once listed, search for **Markdown Syntax Kit** under **Settings → Community plugins → Browse**.
 
-- Extended inline syntax, including:
-    - insertion (underline),
-    - Discord-flavoured spoiler,
-    - Pandoc-style superscript and subscript,
-    - custom colour tags for highlights, and
-    - custom span with ability to insert your own class(es).
-- _Modified_ Pandoc-style fenced div for block-level syntax.
-- Edit formatted text directly without omitting its style, in contrast to using HTML tags.
-- Context-aware, syntax won't be parsed while it encounters such a codeblock, codespan, or context boundary.
-- Quick format with commands and context menu.
-- Toggle specific syntax on and off.
-- Customise colour tags for highlights.
-- Predefine your own tags for custom span and fenced div.
-- Supports rendering exported PDF.
-
-## ✍️ Usage
-
-### 1. Inline Formatting
-
-There are six inline formattings that currently developed in this plugin:
-
-| Type        | Syntax                 | Result                                                        |
-| ----------- | ---------------------- | ------------------------------------------------------------- |
-| insertion   | `++your text++`        | <ins>your text</ins>                                          |
-| spoiler     | `\|\|your text\|\|`    | <span style="background:#2e2e2e">your text</span>             |
-| superscript | `^your-text^`          | <sup>your-text</sup>                                          |
-| subscript   | `~your-text~`          | <sub>your-text</sub>                                          |
-| highlight   | `=={color}your text==` | <mark>your text</mark>                                        |
-| custom span | `!!{myCls}your text!!` | your text (should be rendered with the `myCls` class defined) |
-
-By default:
-- **insertion** give the text underline style,
-- **spoiler** hide the text and can be revealed by clicking it (or hovering over it in editor mode),
-- **superscript** and **subscript** make the text being raised or lowered as `<sup>` and `<sub>` do.
-
-Additionally, for the **highlight** and **custom span**, you may insert a tag right after the opening delimiter, specifying the colour for the highlight, and the classes for the custom span.
-
-### 2. Block Formatting
-
-Currenty, this plugin only support **Pandoc-style fenced div** with some modifications. You only need an opening delimiter (three consecutive colons at least) to start the syntax. Blank line or the end of the document will act as a syntax closing. No need of closing delimiter.
-
-```markdown
-::: my-class-1 my-class-2
-This is fenced div content.
-
-::: another-class
-Another fenced div content.
-```
-
-### 3. Customisable Highlight
-
-Under "Custom highlight" section in the settings, you can:
-
-- **show the color button**, providing a colour menu when you click on it,
-- **adjust opacity** of the highlight,
-- **customise colour palettes** based on its tag:
-    - first field for its name displayed in the colour menu,
-    - second field for its tag inserted into the highlight syntax,
-    - show or hide each palette from the colour menu,
-    - rearrange colours by dragging 6-dots icon on the left side.
-
-<details>
-<img src="docs/assets/custom-highlight.gif" alt="custom-highlight.gif"/>
-</details>
-
-### 4. Predefined Tags
-
-In the settings, you can predefine specific tags for **custom span** and **fenced div**, then can be displayed in the tag menu. Same as the colour palettes, you can set their name and arrange them.
-
-### 5. Commands and Context Menu
-
-This plugin provides commands to toggle each formatting type, also commands to show the color and tag menu. You can set the keymap for each of them through "Hotkeys" in the settings.
-
-It also brings functionality of all those commands (except for fenced div) to the context menu, by right-clicking on the editor and choosing "More format".
-
-<details>
-<img src="docs/assets/commands.gif" alt="commands.gif"/>
-</details>
-
-> [!Note]
->
-> In mobile devices, those commands can be added into the toolbar.
-
-### 6. Tidier Formatting
-
-With "Tidier formatting" enabled in the settings, you can format a single word simply by placing the cursor on it, without the need to select the entire word. Otherwise, it acts like a normal wrapper.
-
-<details>
-<img src="docs/assets/tidier-formatting.gif" alt="tidier-formatting.gif"/>
-</details>
-
-### 7. Other Tweaks
-
-- Enable/disable each formatting type individually under "Syntax switch" section.
-- Prevent fenced div from being styled in source mode.
-- Specifies when tags should be displayed under "Tag display behavior" section.
-- etc...
-
-> [!Note]
-> 
-> You don't need to reload the app after changing the settings.
-
-## 🎨 Styling Custom Spans and Fenced Divs
-
-With tag attached to them, you can insert your own CSS style rules based on their tag. For instance, you can apply this CSS rules to the markdown below:
-
-```css
-.text-large { font-size: 48px }
-.text-green { color: green }
-
-.align-center { text-align: center }
-.bordered { border: 4px solid red }
-```
-
-```markdown
-!!{text-large text-green}Large text with green color.!!
-
-:::align-center bordered
-Should be aligned to the center
-and bordered.
-```
-
-<details>
-<summary>Expected result:</summary>
-<img src="docs/assets/tag-styling.png" alt="tag-styling.png"/>
-</details>
-
-> [!Note]
->
-> For which characters are allowed in the tag, see "Syntax Rules" section below.
-
-## 📜 Syntax Rules
-
-We move the explanation to [this page](./docs/rule.md).
-
-## 📦 Installation
-
-### Community plugins
-
-Once Markdown Syntax Kit is listed in the community directory, open **Settings → Community plugins → Browse**, search for **Markdown Syntax Kit**, then install and enable it.
-
-### Manual installation
-
-1. Get `manifest.json`, `main.js` and `styles.css` from a [GitHub release](https://github.com/soizo/markdown-syntax-kit/releases) whose manifest ID is `markdown-syntax-kit`, or run `npm install` and `npm run build` from this repository.
-2. Copy the three files into `.obsidian/plugins/markdown-syntax-kit` in your vault.
-3. Enable **Markdown Syntax Kit** under **Settings → Community plugins**.
-
-### BRAT
-
-After a release with the new plugin ID is available, add `https://github.com/soizo/markdown-syntax-kit` as a beta plugin in [BRAT](https://github.com/TfTHacker/obsidian42-brat).
-
-### Moving from Extended Markdown Syntax
-
-Markdown Syntax Kit has its own plugin ID. Disable Extended Markdown Syntax before enabling Markdown Syntax Kit to avoid applying both sets of formatting. To carry over your settings, copy `data.json` from the old plugin folder into `.obsidian/plugins/markdown-syntax-kit` before enabling it. Reassign any custom shortcuts under **Settings → Hotkeys**.
-
-## ❓ FAQ's
-
-### Is it working on the table and callout?
-Of course it's working on both, except for the fenced div.
-
-### Does the plugin work on large files?
-I tested it on a 250kB file and it's still working fine. This plugin also uses parser that implemented simple incremental and partial parsing, so you don't need to worry about facing with large files. But if you still have some issues with it, feel free to inform me what the issues you are struggling with.
-
-### Will it cause conflict with other plugins that concerns extending syntax?
-It depends on what character the others use in their syntax.
-
-## 📋 Roadmap
-
-- [x] Enable/disable formatting in settings
-- [x] Applicable on mobile
-- [x] ~~Fixing paragraph alignment bug~~ For now, use fenced divs to customise block-level formatting
-- [x] Customise highlighting colours
-- [ ] Customise formatting styles
-- [x] Applying syntax quickly using shortcuts and context menu
-- [x] ~~Class suggester~~ Predefined tags for custom span and fenced div
-- [x] ~~More syntax, if necessary~~ *I'll be over here for a while*
-
-## ⚙️ Compatibility Note
-
-This plugin have been tested in the latest version of Obsidian (about 1.7.x - 1.8.x), and haven't been tested yet in the version 1.6.x and below.
-
-## 🐞 Known Issues
-
-- Reading-mode delimiter escaping requires the original Markdown section. Where source is unavailable or text cannot be matched safely, see the [escaping limitations](./docs/rule.md#7-note-delimiter-escaping).
-- Cannot escape spoilers that are inside table cells (in source mode). (**cannot be fixed**)
-
-Feel free to let me know if you find any bugs...
-
-## Typing delimiters
-
-Select text and type `++`, `||`, `^`, `~`, `==`, or `!!` to wrap it while keeping the text selected. Select an entire wrapped expression and type its delimiter character to remove the surrounding delimiters while keeping the content selected (for example, select `++text++` and press `+`). Double-character delimiters can also be typed one character at a time. With no selection, completing a delimiter inserts its closing partner and leaves the cursor between them (for example, `++|++`, where `|` represents the cursor). Typing an existing closing delimiter moves past it. This follows the enabled editor syntaxes and skips escaped delimiters, code and other protected Markdown contexts, and IME composition. Superscript and subscript wrapping requires text without whitespace; inline wrapping does not cross line breaks.
-
-Press Backspace or Delete between an empty delimiter pair to remove one character on each side (for example, `++|++` becomes `+|+`, then `|` on the next press). Pairs containing text are left to normal editing. Empty `!!` pairs are excluded by default; enable **Formatting → Auto-delete empty custom span pairs (!!)** to include them.
-
-## Development
+For manual installation, use a [GitHub release](https://github.com/soizo/markdown-syntax-kit/releases) with the `markdown-syntax-kit` manifest ID. Older releases use the original ID. To build from source, run these commands in the repository:
 
 ```sh
 npm install
-npm test
 npm run build
 ```
 
-With Obsidian running, its CLI enabled, and a Markdown note open, `npm run test:obsidian` checks the reading-mode fix against Obsidian's native Markdown output. It uses detached fixture DOM without changing notes or installing the plugin. The native-parser seam is test-only and may need updating for future Obsidian versions.
+Copy `manifest.json`, `main.js` and `styles.css` to `.obsidian/plugins/markdown-syntax-kit` in your vault, then enable the plugin under **Community plugins**. [BRAT](https://github.com/TfTHacker/obsidian42-brat) can install it once a release with the new ID is available.
 
-## 🙏 Acknowledgements
+If you are switching from Extended Markdown Syntax, disable the old plugin, copy its `data.json` into the new plugin folder and reassign any custom hotkeys.
 
-Thanks to:
-- [Pandoc](https://pandoc.org/MANUAL.html) for the idea of some syntax,
-- [CommonMark](https://spec.commonmark.org/) and [GitHub Flavoured Markdown](https://github.github.com/gfm/) for the markdown specification.
-- [Discord](https://discord.com/) for the spoiler idea.
-- [Superschnizel](https://github.com/Superschnizel/obisdian-fast-text-color) for interactive menu idea,
-- [Exaroth](https://github.com/exaroth/mdx_custom_span_class) for custom span idea.
-- [Mara-Li](https://github.com/Mara-Li/obsidian-regex-mark) for some code snippets,
-- [marcel-goldammer](https://github.com/marcel-goldammer/obsidian-keyword-highlighter),
-- [attcoleanderson](https://github.com/mattcoleanderson/obsidian-dynamic-text-concealer)
+## Usage
+
+| Format | Markdown |
+| --- | --- |
+| Underline | `++underlined text++` |
+| Spoiler | `\|\|hidden text\|\|` |
+| Superscript | `x^2^` |
+| Subscript | `H~2~O` |
+| Coloured highlight | `=={accent}highlighted text==` |
+| Custom span | `!!{my-class}styled text!!` |
+
+A fenced div starts with `:::` and ends at a blank line, a change of block context or the end of the note.
+
+```markdown
+::: my-class
+Apply a CSS class to this block.
+```
+
+Select text and type a delimiter to wrap it. Typing the delimiter on an entirely wrapped selection removes the pair. At an empty cursor, typing `++` inserts both delimiters. Use the **More format** editor menu or the command palette to apply formatting. Plugin settings let you enable individual formats, customise highlight colours and save CSS classes for reuse.
+
+See the [syntax rules](docs/rule.md) for delimiter details and [reading-mode escaping limits](docs/rule.md#7-note-delimiter-escaping). Spoiler delimiters in table cells cannot be escaped in Source mode.
+
+## Credits
+
+Maintained by [soizo](https://github.com/soizo). Based on [Extended Markdown Syntax](https://github.com/kotaindah55/extended-markdown-syntax) by Kotaindah55 (Sheva Ihza).
+
+Thanks to [Pandoc](https://pandoc.org/MANUAL.html), [CommonMark](https://spec.commonmark.org/), [GitHub Flavoured Markdown](https://github.github.com/gfm/), [Discord](https://discord.com/), [Superschnizel](https://github.com/Superschnizel/obisdian-fast-text-color), [Exaroth](https://github.com/Exaroth/mdx_custom_span_class), [Mara-Li](https://github.com/Mara-Li/obsidian-regex-mark), [marcel-goldammer](https://github.com/marcel-goldammer/obsidian-keyword-highlighter) and [mattcoleanderson](https://github.com/mattcoleanderson/obsidian-dynamic-text-concealer).
+
+## Contributing
+
+Use [GitHub Issues](https://github.com/soizo/markdown-syntax-kit/issues) for questions, bug reports and proposed changes. Run `npm test` when changing the code.
+
+## Licence
+
+[MIT](LICENSE). Copyright © 2025 Kotaindah55 (Sheva ihza).
