@@ -1,9 +1,10 @@
 {
-	"id": "extended-markdown-syntax",
-	"name": "Extended Markdown Syntax",
+	"id": "markdown-syntax-kit",
+	"name": "Markdown Syntax Kit",
 	"version": "2.0.12",
 	"minAppVersion": "1.7.4",
-	"description": "Extend your Markdown syntax using delimiters instead of HTML tags, such as underlining, superscript, subscript, highlighting, and spoiler.",
-	"author": "Kotaindah55 (Sheva Ihza)",
+	"description": "Add Markdown delimiters for underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans, and fenced divs.",
+	"author": "soizo",
+	"authorUrl": "https://github.com/soizo",
 	"isDesktopOnly": false
 }

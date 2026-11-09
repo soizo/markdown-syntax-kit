@@ -4,7 +4,7 @@ import { Line, RangeSet, RangeValue, Text, Range, SelectionRange, EditorState } 
 import {} from "@codemirror/language";
 import { Decoration, DecorationSet } from "@codemirror/view";
 import { ColorComponent, Command, DropdownComponent, Editor, ExtraButtonComponent, IconName, MarkdownFileInfo, MarkdownView, Setting, SliderComponent, TextAreaComponent, TextComponent, ToggleComponent } from "obsidian";
-import ExtendedMarkdownSyntax from "main";
+import MarkdownSyntaxKit from "main";
 import { TagMenu } from "src/editor-mode/ui-components";
 import { ExtendedSettingTab } from "src/settings/ui/setting-tab";
 
@@ -336,7 +336,7 @@ export type AbstractFieldDesc<TField extends Field, TRecord, TKey extends keyof 
 	type: TField,
 	record: TRecord extends Record<string, unknown> ? TRecord : never,
 	key: TKey extends keyof TRecord ? TRecord[TKey] extends infer TValue ? TValue extends FieldValue<TField> ? TKey : never : never : never,
-	callback?: (component: FieldComponent<TField>, plugin: ExtendedMarkdownSyntax) => unknown,
+	callback?: (component: FieldComponent<TField>, plugin: MarkdownSyntaxKit) => unknown,
 	spec: FieldSpec<TField, TRecord[TKey]>,
 	update?: {
 		deep?: boolean,

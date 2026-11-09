@@ -34,7 +34,7 @@ export const COLOR_SETTINGS_SPEC: TagSettingsSpec = {
 				configs = plugin.settings.colorConfigs,
 				tagManager = plugin.tagManager;
 			picker.setValue(config.color);
-			picker.colorPickerEl.addClasses(["ems-field", "ems-field-color-picker"]);
+			picker.colorPickerEl.addClasses(["msk-field", "msk-field-color-picker"]);
 			picker.onChange(color => {
 				config.color = color;
 				let ruleStr = convertColorConfigToCSSRule(config),

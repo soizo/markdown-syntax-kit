@@ -1,4 +1,4 @@
-import ExtendedMarkdownSyntax from 'main'
+import MarkdownSyntaxKit from 'main'
 import Sortable, { SortableEvent } from 'sortablejs';
 import { App, IconName, PluginSettingTab, Setting } from 'obsidian';
 import { Field, MarkdownViewMode, DisplayBehaviour, Format } from 'src/enums';
@@ -25,7 +25,7 @@ function _collapseElsBelow(rootEl: HTMLElement): void {
 }
 
 export class ExtendedSettingTab extends PluginSettingTab {
-	public readonly plugin: ExtendedMarkdownSyntax;
+	public readonly plugin: MarkdownSyntaxKit;
 	public readonly tagSettingItems: Record<Format.HIGHLIGHT | Format.CUSTOM_SPAN | Format.FENCED_DIV, Setting[]> = {
 		[Format.HIGHLIGHT]: [],
 		[Format.CUSTOM_SPAN]: [],
@@ -45,7 +45,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 	private deeplyRefreshInternal = false;
 	private isHidden = true;
 
-	constructor(app: App, plugin: ExtendedMarkdownSyntax) {
+	constructor(app: App, plugin: MarkdownSyntaxKit) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -131,7 +131,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 							this.collapsedGroups[group.id] = true;
 						}
 					});
-				btnEl.addClass("collapse-button", "ems-button");
+				btnEl.addClass("collapse-button", "msk-button");
 				if (this.collapsedGroups[group.id]) {
 					btnEl.addClass("collapsing");
 					btn.setTooltip("Expand", { placement: "bottom" });
@@ -165,7 +165,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 	}
 
 	public drawTagSettings(containerEl: HTMLElement, spec: TagSettingsSpec, collapsible?: boolean, isCollapsing?: boolean): void {
-		let groupEl = containerEl.createDiv({ cls: ["setting-item", "setting-group", "ems-setting-group"] }),
+		let groupEl = containerEl.createDiv({ cls: ["setting-item", "setting-group", "msk-setting-group"] }),
 			tagManager = this.plugin.tagManager,
 			configs = tagManager.configsMap[spec.type],
 			controlSetting = new Setting(containerEl);
@@ -177,7 +177,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 		_insertButton(controlSetting, spec.addBtnPlaceholder, false, () => {
 			tagManager.add(spec.type);
 			this._setTagItem(spec, configs.at(-1)!, configs, groupEl)
-				.controlEl.querySelector<HTMLElement>(".ems-field-tag")
+				.controlEl.querySelector<HTMLElement>(".msk-field-tag")
 				?.focus();
 		});
 
@@ -214,17 +214,17 @@ export class ExtendedSettingTab extends PluginSettingTab {
 		config.tag = config.tag.replaceAll(spec.tagFilter, "");
 
 		let tagSetting = new Setting(groupEl)
-			.setClass("ems-setting-item")
-			.setClass("ems-tag-config")
+			.setClass("msk-setting-item")
+			.setClass("msk-tag-config")
 			.addExtraButton(btn => {
-				btn.extraSettingsEl.addClasses(["ems-button", "ems-button-drag-handle"]);
+				btn.extraSettingsEl.addClasses(["msk-button", "msk-button-drag-handle"]);
 				btn.setIcon("grip-vertical");
 				btn.setTooltip("Hold and drag to move", { placement: "left" });
 			})
 			.addText(text => {
 				text.setPlaceholder(spec.nameFieldPlaceholder);
 				text.setValue(config.name);
-				text.inputEl.addClasses(["ems-field", "ems-field-name"]);
+				text.inputEl.addClasses(["msk-field", "msk-field-name"]);
 				text.onChange(name => {
 					config.name = name;
 					this.saveSettings();
@@ -232,7 +232,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 			})
 			.addExtraButton(btn => {
 				let btnEl = btn.extraSettingsEl;
-				btnEl.addClasses(["ems-button", "ems-button-delete"]);
+				btnEl.addClasses(["msk-button", "msk-button-delete"]);
 				btn.setIcon("trash");
 				btn.setTooltip("Delete");
 				btn.onClick(() => {
@@ -245,7 +245,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 				});
 			})
 			.addExtraButton(btn => {
-				btn.extraSettingsEl.addClasses(["ems-button", "ems-button-toggle-show-hide"]);
+				btn.extraSettingsEl.addClasses(["msk-button", "msk-button-toggle-show-hide"]);
 				btn.setIcon(config.showInMenu ? "eye" : "eye-off");
 				btn.setTooltip("Show/hide menu item");
 				btn.onClick(() => {
@@ -256,7 +256,7 @@ export class ExtendedSettingTab extends PluginSettingTab {
 			})
 			.addText(text => {
 				text.setPlaceholder(spec.tagFieldPlaceholder);
-				text.inputEl.addClasses(["ems-field", "ems-field-tag"]);
+				text.inputEl.addClasses(["msk-field", "msk-field-tag"]);
 				text.setValue(config.tag);
 				text.onChange(tag => {
 					let index = configs.findIndex(target => target == config);
@@ -350,12 +350,12 @@ export class ExtendedSettingTab extends PluginSettingTab {
 
 	private _makeDragable(groupEl: HTMLElement, onMoved: (evt: SortableEvent) => unknown): void {
 		Sortable.create(groupEl, {
-			handle: ".ems-button-drag-handle",
+			handle: ".msk-button-drag-handle",
 			animation: 100,
 			easing: "cubic-bezier(0.2, 0, 0, 1)",
 			forceFallback: true,
 			fallbackOnBody: true,
-			fallbackClass: "ems-setting-item-dragged",
+			fallbackClass: "msk-setting-item-dragged",
 			fallbackTolerance: 4,
 			onEnd: onMoved,
 		});

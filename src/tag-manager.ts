@@ -1,4 +1,4 @@
-import ExtendedMarkdownSyntax from "main";
+import MarkdownSyntaxKit from "main";
 import { ColorConfig, TagConfig, TagSupportFormat } from "src/types";
 import { Format } from "src/enums";
 import { DEFAULT_SETTINGS } from "src/settings/configs";
@@ -15,7 +15,7 @@ type TagHandlerRecord<T extends TagConfig = TagConfig> =
 type ColorTagHandlerRecord = TagHandlerRecord<ColorConfig>;
 
 export class TagManager {
-	private readonly _plugin: ExtendedMarkdownSyntax;
+	private readonly _plugin: MarkdownSyntaxKit;
 	private readonly _defaultConfigs = {
 		get [Format.HIGHLIGHT]() { return DEFAULT_SETTINGS.colorConfigs },
 		get [Format.CUSTOM_SPAN]() { return DEFAULT_SETTINGS.predefinedSpanTag },
@@ -30,7 +30,7 @@ export class TagManager {
 	public readonly colorsHandler: StyleSheetHandler;
 	public readonly configsMap: Record<Format.CUSTOM_SPAN | Format.FENCED_DIV, TagConfig[]> & Record<Format.HIGHLIGHT, ColorConfig[]>;
 
-	constructor(plugin: ExtendedMarkdownSyntax) {
+	constructor(plugin: MarkdownSyntaxKit) {
 		let { settings } = plugin;
 		this._plugin = plugin;
 		this.configsMap = {

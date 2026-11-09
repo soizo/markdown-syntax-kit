@@ -1,23 +1,25 @@
-# Extended Markdown Syntax - Obsidian Plugin
+# Markdown Syntax Kit
 
-![banner.png](docs/assets/banner.png)
+![Markdown Syntax Kit with examples of underline, coloured highlight and superscript syntax](docs/assets/banner.svg)
 
-Provides some alternatives for inline and block formatting using non-standard syntaxes instead of using html tags, such as underline, superscript, and much more.
+Add Markdown delimiters for underlines, spoilers, superscripts, subscripts, coloured highlights, custom spans and fenced divs in Obsidian.
+
+Markdown Syntax Kit is maintained by [soizo](https://github.com/soizo) and continues [Extended Markdown Syntax](https://github.com/kotaindah55/extended-markdown-syntax), originally created by Kotaindah55 (Sheva Ihza).
 
 ## 🚀 Main Features
 
 - Extended inline syntax, including:
     - insertion (underline),
-    - Discord-flavored spoiler,
+    - Discord-flavoured spoiler,
     - Pandoc-style superscript and subscript,
-    - custom color tag for highlight, and
+    - custom colour tags for highlights, and
     - custom span with ability to insert your own class(es).
 - _Modified_ Pandoc-style fenced div for block-level syntax.
 - Edit formatted text directly without omitting its style, in contrast to using HTML tags.
 - Context-aware, syntax won't be parsed while it encounters such a codeblock, codespan, or context boundary.
 - Quick format with commands and context menu.
 - Toggle specific syntax on and off.
-- Customize your own color tags for custom highlight.
+- Customise colour tags for highlights.
 - Predefine your own tags for custom span and fenced div.
 - Supports rendering exported PDF.
 
@@ -41,7 +43,7 @@ By default:
 - **spoiler** hide the text and can be revealed by clicking it (or hovering over it in editor mode),
 - **superscript** and **subscript** make the text being raised or lowered as `<sup>` and `<sub>` do.
 
-Additionally, for the **highlight** and **custom span**, you may insert a tag right after the opening delimiter, specifying the color for the highlight, and the classes for the custom span.
+Additionally, for the **highlight** and **custom span**, you may insert a tag right after the opening delimiter, specifying the colour for the highlight, and the classes for the custom span.
 
 ### 2. Block Formatting
 
@@ -55,17 +57,17 @@ This is fenced div content.
 Another fenced div content.
 ```
 
-### 3. Customizable Highlight
+### 3. Customisable Highlight
 
 Under "Custom highlight" section in the settings, you can:
 
-- **show the color button**, providing color menu when you click on it,
+- **show the color button**, providing a colour menu when you click on it,
 - **adjust opacity** of the highlight,
-- **customize color palettes** based on its tag:
-    - first field for its name displayed in the color menu,
+- **customise colour palettes** based on its tag:
+    - first field for its name displayed in the colour menu,
     - second field for its tag inserted into the highlight syntax,
-    - show or hide each palette from the color menu,
-    - rearrange colors by dragging 6-dots icon on the left side.
+    - show or hide each palette from the colour menu,
+    - rearrange colours by dragging 6-dots icon on the left side.
 
 <details>
 <img src="docs/assets/custom-highlight.gif" alt="custom-highlight.gif"/>
@@ -73,7 +75,7 @@ Under "Custom highlight" section in the settings, you can:
 
 ### 4. Predefined Tags
 
-In the settings, you can predefine specific tags for **custom span** and **fenced div**, then can be displayed in the tag menu. Same as the color palattes, you can set their name and arrange them.
+In the settings, you can predefine specific tags for **custom span** and **fenced div**, then can be displayed in the tag menu. Same as the colour palettes, you can set their name and arrange them.
 
 ### 5. Commands and Context Menu
 
@@ -143,23 +145,23 @@ We move the explanation to [this page](./docs/rule.md).
 
 ## 📦 Installation
 
-- In-app
-    - Open settings.
-    - Choose "Community plugins" setting tab.
-    - Turn off "Restricted mode" if it was enabled before.
-    - Click "Browse" at "Community plugins" item.
-    - Type "Extended Markdown Syntax" in the search box.
-    - Install and enable it.
-- Manual
-    - Create a folder named `extended-markdown-parser` under `YOUR_VAULT_NAME/.obsidian/plugins`.
-    - Place `manifest.json`, `main.js`, and `style.css` from the latest release into the folder.
-    - Enable it through the "Community plugin" setting tab.
-- Using [BRAT](https://github.com/TfTHacker/obsidian42-brat)
-    - Install and enable "BRAT" plugin in "Community plugins" list.
-    - Choose "BRAT" setting tab.
-    - Click "Add beta plugin" under "Beta plugin list" section.
-    - Enter this repo link into "Repository" input field.
-    - Check "Enable after installing the plugin" and click "Add Plugin".
+### Community plugins
+
+Once Markdown Syntax Kit is listed in the community directory, open **Settings → Community plugins → Browse**, search for **Markdown Syntax Kit**, then install and enable it.
+
+### Manual installation
+
+1. Get `manifest.json`, `main.js` and `styles.css` from a [GitHub release](https://github.com/soizo/markdown-syntax-kit/releases) whose manifest ID is `markdown-syntax-kit`, or run `npm install` and `npm run build` from this repository.
+2. Copy the three files into `.obsidian/plugins/markdown-syntax-kit` in your vault.
+3. Enable **Markdown Syntax Kit** under **Settings → Community plugins**.
+
+### BRAT
+
+After a release with the new plugin ID is available, add `https://github.com/soizo/markdown-syntax-kit` as a beta plugin in [BRAT](https://github.com/TfTHacker/obsidian42-brat).
+
+### Moving from Extended Markdown Syntax
+
+Markdown Syntax Kit has its own plugin ID. Disable Extended Markdown Syntax before enabling Markdown Syntax Kit to avoid applying both sets of formatting. To carry over your settings, copy `data.json` from the old plugin folder into `.obsidian/plugins/markdown-syntax-kit` before enabling it. Reassign any custom shortcuts under **Settings → Hotkeys**.
 
 ## ❓ FAQ's
 
@@ -176,9 +178,9 @@ It depends on what character the others use in their syntax.
 
 - [x] Enable/disable formatting in settings
 - [x] Applicable on mobile
-- [x] ~~Fixing paragraph alignment bug~~ For now, use fenced div to customize block level format
-- [x] Customize highlighting colors
-- [ ] Customize formatting styles
+- [x] ~~Fixing paragraph alignment bug~~ For now, use fenced divs to customise block-level formatting
+- [x] Customise highlighting colours
+- [ ] Customise formatting styles
 - [x] Applying syntax quickly using shortcuts and context menu
 - [x] ~~Class suggester~~ Predefined tags for custom span and fenced div
 - [x] ~~More syntax, if necessary~~ *I'll be over here for a while*
@@ -210,11 +212,11 @@ npm run build
 
 With Obsidian running, its CLI enabled, and a Markdown note open, `npm run test:obsidian` checks the reading-mode fix against Obsidian's native Markdown output. It uses detached fixture DOM without changing notes or installing the plugin. The native-parser seam is test-only and may need updating for future Obsidian versions.
 
-## 🙏 Acknowledgment
+## 🙏 Acknowledgements
 
 Thanks to:
 - [Pandoc](https://pandoc.org/MANUAL.html) for the idea of some syntax,
-- [CommonMark](https://spec.commonmark.org/) and [Github Flavored Markdown](https://github.github.com/gfm/) for the markdown specification.
+- [CommonMark](https://spec.commonmark.org/) and [GitHub Flavoured Markdown](https://github.github.com/gfm/) for the markdown specification.
 - [Discord](https://discord.com/) for the spoiler idea.
 - [Superschnizel](https://github.com/Superschnizel/obisdian-fast-text-color) for interactive menu idea,
 - [Exaroth](https://github.com/exaroth/mdx_custom_span_class) for custom span idea.

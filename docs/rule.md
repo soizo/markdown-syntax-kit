@@ -1,4 +1,4 @@
-## Syntax Rules for Extended Markdown Syntax
+## Syntax Rules for Markdown Syntax Kit
 
 To make clear and avoid ambiguity, some rules are applied to the syntax.
 

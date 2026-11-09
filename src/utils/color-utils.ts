@@ -1,4 +1,4 @@
-import ExtendedMarkdownSyntax from "main";
+import MarkdownSyntaxKit from "main";
 import { StyleSheetHandler } from "src/stylesheet";
 import { ColorConfig } from "src/types";
 
@@ -16,7 +16,7 @@ export function getDefaultColorConfigs() {
 }
 
 export function convertColorConfigToCSSRule(config: ColorConfig) {
-	let selector = `.cm-custom-highlight-${config.tag}, .markdown-rendered mark.custom-highlight-${config.tag}, .ems-menu-item.ems-highlight-${config.tag}>.menu-item-title`,
+	let selector = `.cm-custom-highlight-${config.tag}, .markdown-rendered mark.custom-highlight-${config.tag}, .msk-menu-item.msk-highlight-${config.tag}>.menu-item-title`,
 		prop = "background-color",
 		color = config.color;
 	return `${selector}{${prop}:color(from ${color} srgb r g b/var(--hl-opacity));}`
@@ -31,7 +31,7 @@ export function takeBuiltinColor(color: string) {
 	return document.body.computedStyleMap().get(`--color-${color}`)?.toString();
 }
 
-export function buildColorsStyleSheet(plugin: ExtendedMarkdownSyntax): StyleSheetHandler {
+export function buildColorsStyleSheet(plugin: MarkdownSyntaxKit): StyleSheetHandler {
 	let colorsHandler = new StyleSheetHandler(plugin),
 		configs = plugin.settings.colorConfigs;
 	for (let i = 0; i < configs.length; i++) {

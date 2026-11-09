@@ -1,12 +1,12 @@
-import ExtendedMarkdownSyntax from "main";
+import MarkdownSyntaxKit from "main";
 
 export class StyleSheetHandler {
 	private _stylesheet: CSSStyleSheet;
-	private _plugin?: ExtendedMarkdownSyntax;
+	private _plugin?: MarkdownSyntaxKit;
 	private _root: DocumentOrShadowRoot;
 	private _subHandlers: StyleSheetHandler[] = [];
 
-	constructor(plugin?: ExtendedMarkdownSyntax, root: DocumentOrShadowRoot = document, rootStyleSheet?: CSSStyleSheet) {
+	constructor(plugin?: MarkdownSyntaxKit, root: DocumentOrShadowRoot = document, rootStyleSheet?: CSSStyleSheet) {
 		let curWindow = (root as Document)?.win ?? (root as ShadowRoot).ownerDocument.win;
 		this._stylesheet = new curWindow.globalThis.CSSStyleSheet();
 		this._plugin = plugin;

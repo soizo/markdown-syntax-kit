@@ -1,4 +1,4 @@
-import ExtendedMarkdownSyntax from "main";
+import MarkdownSyntaxKit from "main";
 import { IconName, Menu, Editor, MarkdownFileInfo, MarkdownView, Platform } from "obsidian";
 import { Direction, EditorView } from "@codemirror/view";
 import { IndexCache, TagConfig, InlineFormat } from "src/types";
@@ -66,12 +66,12 @@ export function extendEditorCtxMenu(menu: Menu, editor: Editor, ctx: MarkdownFil
 }
 
 export class TagMenu extends Menu {
-	mainPlugin: ExtendedMarkdownSyntax;
+	mainPlugin: MarkdownSyntaxKit;
 	itemIndexCache: IndexCache = { number: 0 };
 	view: EditorView;
 	type: Format;
 	formatter: Formatter;
-	CLS_PREFIX = "ems-menu-item";
+	CLS_PREFIX = "msk-menu-item";
 	ICON: string;
 	constructor(view: EditorView, type: Format) {
 		super();
@@ -89,18 +89,18 @@ export class TagMenu extends Menu {
 		this.addConfigs(this.getConfigs());
 		this.addDefaultItem();
 		this.addRemoveItem();
-		this.dom.addClass("ems-menu", "ems-tag-menu");
+		this.dom.addClass("msk-menu", "msk-tag-menu");
 		if (type == Format.HIGHLIGHT) {
-			this.dom.addClass("ems-color-menu");
+			this.dom.addClass("msk-color-menu");
 		}
 	}
 	setClassPrefix() {
 		if (this.type == Format.HIGHLIGHT) {
-			this.CLS_PREFIX += " ems-highlight-";
+			this.CLS_PREFIX += " msk-highlight-";
 		} else if (this.type == Format.CUSTOM_SPAN) {
-			this.CLS_PREFIX += " ems-span-";
+			this.CLS_PREFIX += " msk-span-";
 		} else if (this.type == Format.FENCED_DIV) {
-			this.CLS_PREFIX += " ems-div-";
+			this.CLS_PREFIX += " msk-div-";
 		}
 	}
 	setIcon() {
@@ -175,7 +175,7 @@ export class TagMenu extends Menu {
 			this.type == Format.HIGHLIGHT && settings.showRemoveColor ||
 			this.type == Format.CUSTOM_SPAN && settings.showRemoveSpanTag
 		) {
-			this.addConfigItem("Remove", "eraser", "ems-menu-item ems-remove", () => { this.removeFormatting() });
+			this.addConfigItem("Remove", "eraser", "msk-menu-item msk-remove", () => { this.removeFormatting() });
 		}
 	}
 	format(tag: string) {
@@ -232,7 +232,7 @@ export class TagMenu extends Menu {
 			});
 		}
 		Object.defineProperty(other, "CLS_PREFIX", {
-			value: "ems-menu-item",
+			value: "msk-menu-item",
 			configurable: true,
 			writable: true
 		});

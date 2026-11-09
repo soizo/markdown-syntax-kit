@@ -1,4 +1,4 @@
-import ExtendedMarkdownSyntax from "main";
+import MarkdownSyntaxKit from "main";
 import { editorLivePreviewField } from "obsidian";
 import { Annotation, EditorState, Extension, Facet, Prec, StateField, Transaction } from "@codemirror/state";
 import { EditorView, PluginValue, ViewPlugin, ViewUpdate } from "@codemirror/view";
@@ -19,7 +19,7 @@ interface RefreshDesc {
 }
 
 interface InternalInstances {
-	mainPlugin: ExtendedMarkdownSyntax;
+	mainPlugin: MarkdownSyntaxKit;
 	parser: EditorParser;
 	observer: SelectionObserver;
 	builder: DecorationBuilder;
@@ -65,13 +65,13 @@ function _ensureMostUpdatedTree(transaction: Transaction): { tree: Tree, targetL
 
 class _EditorPlugin implements PluginValue {
 	public readonly builder: DecorationBuilder;
-	public readonly mainPlugin: ExtendedMarkdownSyntax;
+	public readonly mainPlugin: MarkdownSyntaxKit;
 
 	public root: DocumentOrShadowRoot;
 	public activities: ActivityRecord;
 
 	constructor(
-		plugin: ExtendedMarkdownSyntax,
+		plugin: MarkdownSyntaxKit,
 		view: EditorView,
 		builder: DecorationBuilder,
 		activities: ActivityRecord
@@ -106,7 +106,7 @@ class _EditorPlugin implements PluginValue {
 
 export const refreshCall = Annotation.define<RefreshDesc>();
 
-export const instancesStore = Facet.define<ExtendedMarkdownSyntax, InternalInstances>({
+export const instancesStore = Facet.define<MarkdownSyntaxKit, InternalInstances>({
 	combine(value) {
 		if (!value.length) return undefined as unknown as InternalInstances;
 		let mainPlugin = value[0],
@@ -132,7 +132,7 @@ export const tagMenuOptionCaches = Facet.define<TagMenuOptionCaches, TagMenuOpti
 
 export const { langStateField, langStateFxType } = hookLangState();
 
-export const editorSyntaxExtender = (plugin: ExtendedMarkdownSyntax): Extension => {
+export const editorSyntaxExtender = (plugin: MarkdownSyntaxKit): Extension => {
 	let preprocessField = StateField.define({
 		create(state: EditorState) {
 			let { parser, observer, builder, activities } = state.facet(instancesStore);

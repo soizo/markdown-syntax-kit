@@ -6,11 +6,11 @@ import { ESCAPE_RE } from "src/utils/escape-utils";
 
 const sourceParser = new MarkdownIt({ html: true, linkify: true });
 const WIKILINK_RE = /!?\[\[[^[\]\r\n]+\]\]/y;
-sourceParser.inline.ruler.before("link", "ems_wikilink", (state, silent) => {
+sourceParser.inline.ruler.before("link", "msk_wikilink", (state, silent) => {
 	WIKILINK_RE.lastIndex = state.pos;
 	const match = WIKILINK_RE.exec(state.src);
 	if (!match) return false;
-	if (!silent) state.push("ems_wikilink", "", 0);
+	if (!silent) state.push("msk_wikilink", "", 0);
 	state.pos += match[0].length;
 	return true;
 });
@@ -36,7 +36,7 @@ function textNodes(root: Node): Text[] {
 /** Recover escape provenance before Markdown consumes backslashes and table pipes. */
 function sourceEscapes(source: string) {
 	if (!source.includes("\\")) return null;
-	let prefix = "\uE000ems";
+	let prefix = "\uE000msk";
 	while (source.includes(prefix)) prefix += "\uE000";
 	const marked = source.replace(ESCAPE_RE, (match, char: string) =>
 		SYNTAX_CHARS.has(char) ? `${prefix}${char.charCodeAt(0)}\uE001` : match);
@@ -61,7 +61,7 @@ function sourceEscapes(source: string) {
 		for (const token of tokens) {
 			if (token.type == "link_open") { inLink = true; continue }
 			if (token.type == "link_close") { inLink = false; continue }
-			if (inLink || token.type == "image" || token.type == "ems_wikilink" ||
+			if (inLink || token.type == "image" || token.type == "msk_wikilink" ||
 				token.type == "code_inline" || token.type == "code_block" || token.type == "fence") continue;
 			if (skippedHtmlTag) {
 				const close = token.type == "html_inline" && /^<\/([\w-]+)\s*>$/.exec(token.content);

@@ -12,10 +12,10 @@ try {
 		outfile,
 		bundle: true,
 		format: "iife",
-		globalName: "__emsSmoke",
+		globalName: "__mskSmoke",
 	});
 	const stylesPath = resolve("styles.css");
-	const code = `new Function("styles", require("fs").readFileSync(${JSON.stringify(outfile)}, "utf8") + ";return __emsSmoke.run(styles);")(require("fs").readFileSync(${JSON.stringify(stylesPath)}, "utf8"))`;
+	const code = `new Function("styles", require("fs").readFileSync(${JSON.stringify(outfile)}, "utf8") + ";return __mskSmoke.run(styles);")(require("fs").readFileSync(${JSON.stringify(stylesPath)}, "utf8"))`;
 	const result = spawnSync("obsidian", ["eval", `code=${code}`], { encoding: "utf8", timeout: 30_000 });
 	process.stdout.write(result.stdout ?? "");
 	process.stderr.write(result.stderr ?? "");

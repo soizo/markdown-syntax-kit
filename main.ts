@@ -11,7 +11,7 @@ import { TagManager } from "src/tag-manager";
 import { ReadingModeSyntaxExtender } from "src/preview-mode/post-processor/core";
 import { editorSyntaxExtender, refreshCall } from "src/editor-mode/cm-extensions";
 
-export default class ExtendedMarkdownSyntax extends Plugin {
+export default class MarkdownSyntaxKit extends Plugin {
 	declare settings: PluginSettings;
 	opacityHandler: StyleSheetHandler;
 	tagManager: TagManager;
@@ -32,7 +32,7 @@ export default class ExtendedMarkdownSyntax extends Plugin {
 		this.registerCommands(editorCommands);
 		this.extendEditorCtxMenu();
 
-		console.log("Load Extended Markdown Syntax");
+		console.log(`Load ${this.manifest.name}`);
 	}
 
 	async loadSettings() {
@@ -46,7 +46,7 @@ export default class ExtendedMarkdownSyntax extends Plugin {
 	onunload(): void {
 		this.tagManager.colorsHandler.destroy();
 		this.opacityHandler.destroy();
-		console.log("Unload Extended Markdown Syntax");
+		console.log(`Unload ${this.manifest.name}`);
 	}
 
 	reconfigureDelimLookup() {

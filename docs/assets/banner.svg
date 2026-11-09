@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="470" viewBox="0 0 1440 470" role="img" aria-labelledby="title description">
+  <title id="title">Markdown Syntax Kit</title>
+  <desc id="description">Markdown delimiters for underlines, coloured highlights and superscripts.</desc>
+  <rect width="1440" height="470" rx="24" fill="#e3f0eb"/>
+  <path d="M72 100h64" stroke="#427360" stroke-width="4"/>
+  <g font-family="system-ui, sans-serif">
+    <text x="72" y="167" font-size="20" font-weight="600" letter-spacing="2.5" fill="#3f6758">MARKDOWN FORMATTING FOR OBSIDIAN</text>
+    <text x="68" y="251" font-size="68" font-weight="750" fill="#172d25">Markdown Syntax Kit</text>
+    <text x="72" y="307" font-size="26" fill="#3f6758">Extra formatting with simple delimiters.</text>
+  </g>
+  <rect x="828" y="84" width="540" height="302" rx="16" fill="#f8fcfa" stroke="#b9d1c7" stroke-width="2"/>
+  <path d="M828 183h540m-540 102h540" stroke="#dce9e3" stroke-width="2"/>
+  <g fill="#326653" font-family="monospace" font-size="25">
+    <text x="862" y="144">++underline++</text>
+    <text x="862" y="245">=={accent}colour==</text>
+    <text x="862" y="347">x^2^</text>
+  </g>
+  <g fill="#172d25" font-family="system-ui, sans-serif" font-size="28">
+    <text x="1190" y="144" text-decoration="underline">underline</text>
+    <rect x="1181" y="216" width="132" height="42" rx="5" fill="#f4e6a7"/>
+    <text x="1190" y="245">colour</text>
+    <text x="1190" y="347">x²</text>
+  </g>
+</svg>

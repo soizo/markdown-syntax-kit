@@ -20,10 +20,10 @@
 	}
 }
 
-.cm-custom-highlight-accent, .markdown-rendered mark.custom-highlight-accent, .ems-menu-item.ems-highlight-accent>.menu-item-title {
+.cm-custom-highlight-accent, .markdown-rendered mark.custom-highlight-accent, .msk-menu-item.msk-highlight-accent>.menu-item-title {
 	background-color: hsl(var(--color-accent-hsl), var(--hl-opacity));
 }
-.cm-custom-highlight-default, .markdown-rendered mark.custom-highlight-default, .ems-menu-item.ems-highlight-default>.menu-item-title {
+.cm-custom-highlight-default, .markdown-rendered mark.custom-highlight-default, .msk-menu-item.msk-highlight-default>.menu-item-title {
 	background-color: rgba(var(--text-highlight-bg-rgb), var(--hl-opacity));
 }
 
@@ -48,8 +48,8 @@ mark {
 	background-color: inherit;
 }
 
-.ems-menu.ems-tag-menu {
-	&.ems-color-menu .menu-item {
+.msk-menu.msk-tag-menu {
+	&.msk-color-menu .menu-item {
 		padding-top: 3px;
 		padding-bottom: 3px;
 		& > .menu-item-title {
@@ -59,7 +59,7 @@ mark {
 			border-radius: 2px;
 		}
 	}
-	.ems-menu-item.ems-remove {
+	.msk-menu-item.msk-remove {
 		color: rgb(var(--color-red-rgb));
 	}
 }
@@ -97,7 +97,7 @@ span.spoiler:not(.spoiler-revealed) {
 	color: var(--text-faint);
 }
 
-.setting-item.setting-group.ems-setting-group {
+.setting-item.setting-group.msk-setting-group {
 	display: block;
 	padding-bottom: 0;
 	padding-top: 0;
@@ -110,24 +110,24 @@ span.spoiler:not(.spoiler-revealed) {
 	display: none !important;
 }
 
-.setting-item.ems-setting-item.ems-tag-config {
+.setting-item.msk-setting-item.msk-tag-config {
 	margin-inline-end: 0;
 	transition: background-color 150ms cubic-bezier(0.2, 0, 0, 1);
-	.clickable-icon.extra-setting-button.ems-button.ems-button-drag-handle {
+	.clickable-icon.extra-setting-button.msk-button.msk-button-drag-handle {
 		cursor: grab;
 	}
 	.setting-item-info {
 		display: none;
 	}
 	.setting-item-control {
-		.ems-field.ems-field-name, .ems-field.ems-field-tag {
+		.msk-field.msk-field-name, .msk-field.msk-field-tag {
 			flex: auto;
 		}
 	}
 	&.sortable-chosen {
 		background-color: hsla(var(--color-accent-hsl), 0.1);
 		cursor: grabbing;
-		.clickable-icon.extra-setting-button.ems-button.ems-button-drag-handle {
+		.clickable-icon.extra-setting-button.msk-button.msk-button-drag-handle {
 			cursor: grabbing;
 			background-color: transparent;
 		}
@@ -144,21 +144,21 @@ span.spoiler:not(.spoiler-revealed) {
 	transform: rotate(-90deg);
 }
 
-.clickable-icon.extra-setting-button.ems-button.ems-button-delete {
+.clickable-icon.extra-setting-button.msk-button.msk-button-delete {
 	color: var(--color-red);
 }
 
-.clickable-icon.extra-setting-button.ems-button.ems-button-drag-handle {
+.clickable-icon.extra-setting-button.msk-button.msk-button-drag-handle {
 	cursor: grab;
 	&:active {
 		cursor: grabbing;
 	}
 }
 
-input.ems-field.ems-field-tag {
+input.msk-field.msk-field-tag {
 	font-family: var(--font-monospace-override);
 }
 
-.ems-setting-item-dragged {
+.msk-setting-item-dragged {
 	visibility: hidden;
 }
